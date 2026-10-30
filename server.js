@@ -31,10 +31,10 @@ app.use(helmet({
       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://cdn.jsdelivr.net"],
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
-      imgSrc: ["'self'", "https:", "data:", "blob:"],
+      imgSrc: ["'self'", "https:", "data:", "blob:", "https://res.cloudinary.com", "https://img.youtube.com"],
       mediaSrc: ["'self'", "https:", "blob:"],
       connectSrc: ["'self'", "https://ipapi.co", "https://api.cloudinary.com", "https://vimeo.com", "https://player.vimeo.com"],
-      frameSrc: ["'self'", "https:"],
+      frameSrc: ["'self'", "https:", "https://www.youtube.com"],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
       formAction: ["'self'"]
@@ -153,13 +153,16 @@ async function cleanupFeaturedEpisodes() {
 }
 
 async function initialize() {
-  if (!process.env.MONGODB_URI) throw new Error("MONGODB_URI is missing. Set it in .env before starting.");
+  const mongoUri = process.env.MONGODB_URI;
+  if (!process.env.MONGODB_URI) {
+    console.error("MONGODB_URI is totally missing from process.env");
+  }
   if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD || !process.env.JWT_SECRET) {
     throw new Error("ADMIN_EMAIL, ADMIN_PASSWORD, and JWT_SECRET must be configured.");
   }
 
   if (mongoose.connection.readyState !== 1) {
-    await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
+    await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 10000 });
   }
   await cleanupFeaturedEpisodes();
   await Episode.createIndexes();

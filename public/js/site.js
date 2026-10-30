@@ -40,7 +40,8 @@
         headers: { ...(options.body ? { "Content-Type": "application/json" } : {}), ...(options.headers || {}) }
       });
     } catch (error) {
-      throw new Error("Unable to reach the site right now. Please try again.");
+      console.error("Site API request failed:", error);
+      throw new Error(error.message || "Unable to reach the site right now. Please try again.");
     }
     let payload = {};
     try { payload = await response.json(); } catch { payload = {}; }
@@ -81,7 +82,7 @@
 
   function renderEpisodes() {
     videoGrid.replaceChildren();
-    const heroEpisode = episodes.find((episode) => episode.isFeatured) || episodes[0];
+    const heroEpisode = episodes.find((episode) => episode.isFeatured === true) || episodes[0];
     if (heroEpisode) {
       featuredTitle.textContent = heroEpisode.title || "";
       featuredPlay.dataset.episodeId = heroEpisode.id;
@@ -101,9 +102,7 @@
       featuredCta.removeAttribute("data-episode-id");
       featuredCard.style.backgroundImage = "";
     }
-    const hubEpisodes = heroEpisode
-      ? episodes.filter((episode) => episode.id !== heroEpisode.id)
-      : [];
+    const hubEpisodes = episodes.filter((episode) => episode.isFeatured !== true);
     console.log("Hero episode id:", heroEpisode?.id ?? null, "Video Hub episode ids:", hubEpisodes.map((episode) => episode.id));
     if (!hubEpisodes.length) {
       const empty = createText("p", "empty-episodes", "More episodes coming soon.");
@@ -415,17 +414,42 @@
 
   async function loadSiteData() {
     try {
-      const [episodeData, settings] = await Promise.all([request("/episodes"), request("/settings")]);
-      episodes = Array.isArray(episodeData) ? episodeData : episodeData.episodes || [];
+      const episodeData = await request("/episodes");
+      const receivedEpisodes = Array.isArray(episodeData) ? episodeData : episodeData.episodes || [];
+      episodes = receivedEpisodes
+        .filter((episode) => episode && typeof episode === "object")
+        .map((episode) => ({ ...episode, id: String(episode.id ?? episode._id ?? "") }))
+        .filter((episode) => episode.id.length > 0);
       renderEpisodes();
-      updateSocialLinks(settings);
     } catch (error) {
       episodes = [];
-      renderEpisodes();
-      showToast(error.message, true);
+      console.error("Could not load public page data:", error);
+      featuredTitle.textContent = "Episodes unavailable";
+      featuredPlay.disabled = true;
+      featuredCta.disabled = true;
+      featuredPlay.removeAttribute("data-episode-id");
+      featuredCta.removeAttribute("data-episode-id");
+      featuredCard.style.backgroundImage = "";
+      videoGrid.replaceChildren(createText("p", "empty-episodes", `Could not load episodes: ${error.message}`));
+      return;
+    }
+
+    try {
+      updateSocialLinks(await request("/settings"));
+    } catch (error) {
+      console.error("Could not load public site settings:", error);
+      showToast(`Could not load site settings: ${error.message}`);
     }
   }
 
-  renderInvestigationTiles();
-  loadSiteData();
+  try {
+    renderInvestigationTiles();
+    loadSiteData();
+  } catch (error) {
+    console.error("Public page startup failed:", error);
+    featuredTitle.textContent = "Episodes unavailable";
+    featuredPlay.disabled = true;
+    featuredCta.disabled = true;
+    videoGrid.replaceChildren(createText("p", "empty-episodes", `Could not start the page: ${error.message}`));
+  }
 })();

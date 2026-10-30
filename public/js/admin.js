@@ -45,7 +45,8 @@
     try {
       response = await fetch(`${API_BASE}${path}`, { ...options, headers });
     } catch (error) {
-      throw new Error("Unable to reach the API. Check the server connection and try again.");
+      console.error("Admin API request failed:", error);
+      throw new Error(error.message || "Unable to reach the API. Check the server connection and try again.");
     }
     if (response.status === 401 && !path.startsWith("/auth/login")) {
       logout();
@@ -829,7 +830,10 @@
     editingId = routeName === "add-episode" ? editingId : null;
     setActive(routeName);
     try { await routeRenderers[routeName](); }
-    catch (error) { root.replaceChildren(emptyState(error.message)); }
+    catch (error) {
+      console.error("Admin page route failed:", error);
+      root.replaceChildren(emptyState(error.message));
+    }
   }
 
   document.getElementById("logout-button").addEventListener("click", logout);
@@ -849,5 +853,8 @@
   });
   document.getElementById("confirm-modal").addEventListener("click", (event) => { if (event.target.id === "confirm-modal") closeConfirm(); });
   window.addEventListener("hashchange", route);
-  route();
+  route().catch((error) => {
+    console.error("Admin page startup failed:", error);
+    root.replaceChildren(emptyState(error.message || "The admin page could not be loaded."));
+  });
 })();
