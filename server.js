@@ -21,6 +21,7 @@ app.locals.MAX_EPISODES = MAX_EPISODES;
 const categoriesToSeed = [
   "Politics", "Economy", "Elections", "Oil & Gas", "Civil Unrest", "Education & Health", "Business"
 ];
+let initializationPromise;
 
 app.disable("x-powered-by");
 app.use(helmet({
@@ -70,7 +71,7 @@ app.use(express.urlencoded({ extended: false, limit: "50kb" }));
 app.use("/api", publicRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
-app.use(express.static(publicDirectory, { index: false, maxAge: "1h" }));
+app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => res.sendFile(path.join(publicDirectory, "index.html")));
 app.get("/admin", (req, res) => res.sendFile(path.join(publicDirectory, "admin.html")));
 
@@ -151,16 +152,43 @@ async function cleanupFeaturedEpisodes() {
   );
 }
 
-async function start() {
+async function initialize() {
   if (!process.env.MONGODB_URI) throw new Error("MONGODB_URI is missing. Set it in .env before starting.");
   if (!process.env.ADMIN_EMAIL || !process.env.ADMIN_PASSWORD || !process.env.JWT_SECRET) {
     throw new Error("ADMIN_EMAIL, ADMIN_PASSWORD, and JWT_SECRET must be configured.");
   }
-  await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
+
+  if (mongoose.connection.readyState !== 1) {
+    await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
+  }
   await cleanupFeaturedEpisodes();
   await Episode.createIndexes();
   await seedInitialData();
+}
+
+function ensureInitialized() {
+  if (!initializationPromise) {
+    initializationPromise = initialize().catch((error) => {
+      initializationPromise = null;
+      throw error;
+    });
+  }
+  return initializationPromise;
+}
+
+async function start() {
+  await ensureInitialized();
   return app.listen(port, () => console.log(`The Pointer server listening on port ${port}.`));
+}
+
+async function vercelHandler(req, res) {
+  try {
+    await ensureInitialized();
+  } catch (error) {
+    console.error(`The Pointer could not initialize: ${error?.message || "database connection or initialization failed."}`);
+    return res.status(500).json({ error: "The service could not be initialized." });
+  }
+  return app(req, res);
 }
 
 if (require.main === module) {
@@ -171,4 +199,8 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, start, seedInitialData, cleanupFeaturedEpisodes };
+module.exports = vercelHandler;
+module.exports.app = app;
+module.exports.start = start;
+module.exports.seedInitialData = seedInitialData;
+module.exports.cleanupFeaturedEpisodes = cleanupFeaturedEpisodes;
