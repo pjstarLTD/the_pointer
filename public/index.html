@@ -1,6 +1,13 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
+  <script>
+    try {
+      document.documentElement.dataset.theme = localStorage.getItem("pointer-theme") === "dark" ? "dark" : "light";
+    } catch (error) {
+      document.documentElement.dataset.theme = "light";
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b0e13">
@@ -12,22 +19,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      color-scheme: dark;
-      --page: #0b0e13;
-      --panel: #111827;
-      --panel-raised: #151d2b;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --subtle: #718198;
-      --accent: #dc1b3f;
-      --accent-hover: #f02a4f;
-      --border: rgba(148, 163, 184, .14);
-      --input: #fff;
-      --input-text: #111827;
-      --shadow: rgba(0, 0, 0, .35);
-    }
-
-    :root[data-theme="light"] {
       color-scheme: light;
       --bg: #EAF0F7;
       --card: #FFFFFF;
@@ -46,6 +37,26 @@
       --input-text: #111827;
       --shadow: rgba(15, 23, 42, .15);
     }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --page: #0b0e13;
+      --panel: #111827;
+      --panel-raised: #151d2b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --subtle: #718198;
+      --accent: #dc1b3f;
+      --accent-hover: #f02a4f;
+      --border: rgba(148, 163, 184, .14);
+      --input: #fff;
+      --input-text: #111827;
+      --shadow: rgba(0, 0, 0, .35);
+    }
+
+    .theme-icon { display: none; }
+    :root[data-theme="light"] .theme-icon-light,
+    :root[data-theme="dark"] .theme-icon-dark { display: block; }
 
     :root[data-theme="light"] .newsletter,
     :root[data-theme="light"] footer {
@@ -203,6 +214,7 @@
       position: relative; height: 220px; background-color: #0F172A;
       background-position: center; background-size: cover;
     }
+    .hub-thumbnail-link { position: absolute; z-index: 0; inset: 0; display: block; }
     .hub-thumb .thumb-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .hub-thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 65%, rgba(3, 7, 14, .2)); pointer-events: none; }
     .hub-play {
@@ -223,8 +235,9 @@
       min-height: clamp(188px, 15.3vw, 220px); position: relative; display: flex; align-items: flex-end; overflow: hidden;
       border-radius: 24px; padding: 18px; background-color: #0F172A; background-size: cover; background-position: center;
     }
-    .investigation-tile::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5, 9, 14, .03) 24%, rgba(5, 9, 14, .86) 100%); }
-    .investigation-tile span { position: relative; z-index: 1; color: #FFFFFF; font-size: 19px; font-weight: 800; letter-spacing: -.01em; }
+    .investigation-tile::before { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(5, 9, 14, .03) 24%, rgba(5, 9, 14, .86) 100%); }
+    .investigation-tile img { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+    .investigation-tile span { position: relative; z-index: 2; color: #FFFFFF; font-size: 19px; font-weight: 800; letter-spacing: -.01em; }
     .more-label { margin: 18px 0 0; color: var(--muted); font-size: 11px; font-weight: 700; }
 
     .corporate-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px; align-items: center; margin-top: 25px; }
@@ -404,8 +417,9 @@
           </span>
         </div>
         <div class="production"><span class="status-dot" aria-hidden="true"></span><span>A Delbuster Global Media Production</span></div>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle theme">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.7" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Toggle theme">
+          <svg class="theme-icon theme-icon-light" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <svg class="theme-icon theme-icon-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.7" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
       </div>
     </div>
@@ -629,8 +643,8 @@
       <h2 class="modal-title" id="modal-title">Watch video</h2>
       <div class="modal-player" id="modal-player">
         <div class="media-fallback" id="media-fallback" hidden>
-          <strong>This source can't be embedded here</strong>
-          <a class="pill" id="fallback-open-link" href="#" target="_blank" rel="noopener">Open video in new tab ↗</a>
+          <strong>This video can't be played here</strong>
+          <a class="pill" id="fallback-open-link" href="#" target="_blank" rel="noopener">Open video in new tab</a>
         </div>
       </div>
       <a class="pill media-open-link" id="open-video-link" href="#" target="_blank" rel="noopener" hidden>Open video in new tab ↗</a>
@@ -652,5 +666,138 @@
 
   <script src="/js/media.js"></script>
   <script src="/js/site.js"></script>
+  <script>
+    (() => {
+      const videoGrid = document.getElementById("video-grid");
+      const episodesById = new Map();
+      let episodesLoaded = false;
+
+      function createExternalLink(className, url, label, content) {
+        const link = document.createElement("a");
+        link.className = className.replace(/\bjs-play-video\b/g, "").trim();
+        link.setAttribute("href", url);
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        if (label) link.setAttribute("aria-label", label);
+        while (content.firstChild) link.append(content.firstChild);
+        return link;
+      }
+
+      function validVideoUrl(value) {
+        if (typeof value !== "string" || !value) return false;
+        try {
+          const protocol = new URL(value).protocol;
+          return protocol === "http:" || protocol === "https:";
+        } catch {
+          return false;
+        }
+      }
+
+      function updateHubCards() {
+        if (!episodesLoaded) return;
+        videoGrid.querySelectorAll(".hub-card").forEach((card) => {
+          if (card.dataset.externalLinksReady === "true") return;
+          const playButton = card.querySelector(".hub-play");
+          const watchButton = card.querySelector(".hub-card-bottom .js-play-video");
+          if (!playButton || !watchButton) return;
+
+          const episodeId = playButton.dataset.episodeId || watchButton.dataset.episodeId;
+          const episode = episodesById.get(String(episodeId));
+          const videoUrl = episode && episode.videoUrl;
+          card.dataset.externalLinksReady = "true";
+
+          if (!validVideoUrl(videoUrl)) {
+            [playButton, watchButton].forEach((button) => {
+              button.disabled = true;
+              button.classList.remove("js-play-video");
+            });
+            watchButton.textContent = "Link unavailable";
+            return;
+          }
+
+          const thumbnail = card.querySelector(".hub-thumb");
+          const image = thumbnail.querySelector(".thumb-image");
+          const thumbnailLink = document.createElement("a");
+          thumbnailLink.className = "hub-thumbnail-link";
+          thumbnailLink.setAttribute("href", videoUrl);
+          thumbnailLink.target = "_blank";
+          thumbnailLink.rel = "noopener noreferrer";
+          if (image) {
+            thumbnail.insertBefore(thumbnailLink, image);
+            thumbnailLink.append(image);
+          } else {
+            thumbnail.append(thumbnailLink);
+          }
+
+          playButton.replaceWith(createExternalLink(
+            playButton.className,
+            videoUrl,
+            playButton.getAttribute("aria-label"),
+            playButton
+          ));
+          watchButton.replaceWith(createExternalLink(
+            watchButton.className,
+            videoUrl,
+            "",
+            watchButton
+          ));
+        });
+      }
+
+      videoGrid.addEventListener("click", (event) => {
+        const trigger = event.target.closest(".js-play-video");
+        if (trigger) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+      }, true);
+      new MutationObserver(updateHubCards).observe(videoGrid, { childList: true, subtree: true });
+      fetch("/api/episodes")
+        .then((response) => {
+          if (!response.ok) throw new Error(`Episode request failed with status ${response.status}.`);
+          return response.json();
+        })
+        .then((data) => {
+          const episodes = Array.isArray(data) ? data : data.episodes || [];
+          episodes.forEach((episode) => {
+            const id = episode.id || episode._id;
+            if (id != null) episodesById.set(String(id), episode);
+          });
+          episodesLoaded = true;
+          updateHubCards();
+        })
+        .catch((error) => {
+          console.error("Could not load Video Hub links.", error);
+          episodesLoaded = true;
+          updateHubCards();
+        });
+    })();
+  </script>
+  <script>
+    (() => {
+        const tiles = [
+          ["Politics", "/images/inv-politics.jpg", "Politics and public leadership"],
+          ["Economy & Enterprise", "/images/inv-economy.jpg", "Economy and enterprise"],
+          ["Elections", "/images/inv-elections.jpg", "Elections and voting"],
+          ["Oil & Gas", "/images/inv-oilgas.jpg", "Oil and gas industry"],
+          ["Civil Unrest", "/images/inv-unrest.jpg", "Civil unrest and public demonstrations"],
+          ["Education & Health", "/images/inv-education.jpg", "Education and healthcare"]
+        ];
+        const grid = document.getElementById("investigation-grid");
+        grid.replaceChildren();
+        tiles.forEach(([label, src, alt]) => {
+          const tile = document.createElement("div");
+          tile.className = "investigation-tile";
+          const image = document.createElement("img");
+          image.src = src;
+          image.alt = alt;
+          image.loading = "lazy";
+          const text = document.createElement("span");
+          text.textContent = label;
+          tile.append(image, text);
+          grid.append(tile);
+        });
+    })();
+  </script>
 </body>
 </html>

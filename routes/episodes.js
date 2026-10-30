@@ -11,6 +11,7 @@ router.get("/", async (req, res, next) => {
     return res.json(episodes.map((episode) => ({
       ...episode,
       id: String(episode._id),
+      videoUrl: episode.videoUrl,
       isFeatured: episode.isFeatured === true
     })));
   } catch (error) {

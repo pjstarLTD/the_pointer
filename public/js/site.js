@@ -190,7 +190,7 @@
 
   function clearPlayer() {
     window.clearTimeout(frameTimer);
-    modalPlayer.replaceChildren();
+    modalPlayer.replaceChildren(fallbackMessage);
     fallbackMessage.hidden = true;
     openExternal.hidden = true;
     playerControls.hidden = true;
@@ -222,6 +222,7 @@
       showToast("This video has an invalid source URL.");
       return;
     }
+    console.log("Playing:", resolved);
     activeVideo = episode;
     lastFocusedElement = trigger;
     modalTitle.textContent = episode.title || "Watch video";
@@ -235,8 +236,9 @@
     if (["video", "hls", "audio"].includes(type)) {
       const media = document.createElement(type === "audio" ? "audio" : "video");
       media.className = "modal-video";
-      media.controls = false;
+      media.controls = type === "video";
       media.playsInline = true;
+      media.autoplay = type === "video";
       media.preload = "metadata";
       const poster = safeImageUrl(episode.thumbnailUrl || episode.thumbnail);
       if (poster && type !== "audio") media.poster = poster;
@@ -372,7 +374,8 @@
     const button = form.querySelector('button[type="submit"]');
     button.disabled = true;
     try {
-      await request("/contact", { method: "POST", body: JSON.stringify(Object.fromEntries(new FormData(form))) });
+      const result = await request("/contact", { method: "POST", body: JSON.stringify(Object.fromEntries(new FormData(form))) });
+      if (!result.ok) throw new Error("Your message could not be sent. Please try again.");
       form.reset();
       showToast("Message received! Saved to Admin Portal");
     } catch (error) { showToast(error.message, true); }
@@ -385,9 +388,10 @@
     const button = form.querySelector('button[type="submit"]');
     button.disabled = true;
     try {
-      await request("/newsletter", { method: "POST", body: JSON.stringify(Object.fromEntries(new FormData(form))) });
+      const result = await request("/newsletter", { method: "POST", body: JSON.stringify(Object.fromEntries(new FormData(form))) });
+      if (!result.ok) throw new Error(result.message || "Your subscription could not be saved.");
       form.reset();
-      showToast("Thanks for subscribing to The Pointer Briefing.");
+      showToast(result.message || "Thanks for subscribing to The Pointer Briefing.");
     } catch (error) {
       showToast(error.status === 409 ? "You're already subscribed." : error.message, true);
     } finally { button.disabled = false; }

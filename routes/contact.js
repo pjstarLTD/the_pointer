@@ -14,8 +14,9 @@ router.post("/", contactLimiter, async (req, res, next) => {
     if (!name || !isEmail(email) || !subject || !message) {
       return res.status(400).json({ error: "Name, valid email, subject, and message are required." });
     }
-    await ContactMessage.create({ name, email, subject, message });
-    return res.status(201).json({ message: "Your message has been received." });
+    const savedMessage = await ContactMessage.create({ name, email, subject, message });
+    console.log("Contact message saved:", savedMessage._id);
+    return res.status(201).json({ ok: true });
   } catch (error) {
     return next(error);
   }

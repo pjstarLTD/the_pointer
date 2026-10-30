@@ -244,6 +244,12 @@ router.get("/messages", tryRoute(async (req, res) => {
   res.json(await ContactMessage.find().sort({ createdAt: -1 }).lean());
 }));
 
+router.patch("/messages/:id/read", tryRoute(async (req, res) => {
+  const message = await ContactMessage.findByIdAndUpdate(req.params.id, { read: true }, { new: true });
+  if (!message) return res.status(404).json({ error: "Message not found." });
+  return res.json(message);
+}));
+
 router.patch("/messages/:id", tryRoute(async (req, res) => {
   if (typeof req.body?.read !== "boolean") return res.status(400).json({ error: "Read must be true or false." });
   const message = await ContactMessage.findByIdAndUpdate(req.params.id, { read: req.body.read }, { new: true });
@@ -272,6 +278,25 @@ router.delete("/subscribers/:id", tryRoute(async (req, res) => {
   const subscriber = await Subscriber.findByIdAndDelete(req.params.id);
   if (!subscriber) return res.status(404).json({ error: "Subscriber not found." });
   return res.status(204).end();
+}));
+
+router.get("/stats", tryRoute(async (req, res) => {
+  const [totalEpisodes, publishedEpisodes, draftEpisodes, messageCount, unreadMessageCount, subscriberCount] = await Promise.all([
+    Episode.countDocuments(),
+    Episode.countDocuments({ status: "published" }),
+    Episode.countDocuments({ status: "draft" }),
+    ContactMessage.countDocuments(),
+    ContactMessage.countDocuments({ read: false }),
+    Subscriber.countDocuments()
+  ]);
+  return res.json({
+    totalEpisodes,
+    publishedEpisodes,
+    draftEpisodes,
+    messageCount,
+    unreadMessageCount,
+    subscriberCount
+  });
 }));
 
 module.exports = router;

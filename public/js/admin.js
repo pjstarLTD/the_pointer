@@ -645,17 +645,18 @@
     const messages = document.getElementById("messages-list");
     const subscribers = document.getElementById("subscriber-list");
     try {
-      const [episodeResult, messagesResult, subscriberResult] = await Promise.all([
-        loadEpisodes(), api("/admin/messages"), api("/admin/subscribers"), loadEpisodeLimit()
+      const [messagesResult, subscriberResult, statsResult, limitResult] = await Promise.all([
+        api("/admin/messages"), api("/admin/subscribers"), api("/admin/stats"), loadEpisodeLimit()
       ]);
+      episodeLimit = limitResult;
       document.getElementById("episode-limit-counter").textContent = episodeLimitLabel();
       const messageItems = Array.isArray(messagesResult) ? messagesResult : messagesResult.messages || [];
       const subscriberItems = Array.isArray(subscriberResult) ? subscriberResult : subscriberResult.subscribers || [];
       const counts = [
-        ["Total episodes", episodes.length],
-        ["Published", episodes.filter((item) => item.status === "published").length],
-        ["Drafts", episodes.filter((item) => item.status === "draft").length],
-        ["Subscribers", subscriberItems.length]
+        ["Total episodes", statsResult.totalEpisodes],
+        ["Published", statsResult.publishedEpisodes],
+        ["Drafts", statsResult.draftEpisodes],
+        ["Subscribers", statsResult.subscriberCount]
       ];
       counts.forEach(([label, count]) => {
         const card = document.createElement("div"); card.className = "stat-card";
@@ -664,14 +665,15 @@
         card.append(name, value); stats.append(card);
       });
       if (!messageItems.length) messages.append(emptyState("No messages yet."));
-      messageItems.slice(0, 8).forEach((message) => {
+      messageItems.forEach((message) => {
         const row = document.createElement("div"); row.className = "list-row";
         const top = document.createElement("div"); top.className = "message-row";
-        const name = document.createElement("span"); name.className = "message-name"; name.textContent = `${message.name || "Visitor"} · ${message.subject || "General Inquiry"}`;
+        const name = document.createElement("span"); name.className = "message-name"; name.textContent = message.name || "Visitor";
         const actions = document.createElement("span"); actions.className = "message-actions";
         const read = document.createElement("button"); read.className = "table-action"; read.textContent = message.read ? "Read" : "Mark read";
+        read.disabled = message.read === true;
         read.addEventListener("click", async () => {
-          try { await api(`/admin/messages/${encodeURIComponent(message._id)}`, { method: "PATCH", body: JSON.stringify({ read: true }) }); await renderDashboard(); }
+          try { await api(`/admin/messages/${encodeURIComponent(message._id)}/read`, { method: "PATCH" }); await renderDashboard(); }
           catch (error) { showToast(error.message, true); }
         });
         const del = document.createElement("button"); del.className = "table-action delete"; del.textContent = "Delete";
@@ -680,27 +682,42 @@
           catch (error) { showToast(error.message, true); }
         });
         actions.append(read, del); top.append(name, actions);
-        const copy = document.createElement("div"); copy.className = "message-copy collapsed"; copy.textContent = `${message.email || ""} · ${message.message || ""}`;
+        const copy = document.createElement("div");
+        copy.className = "message-copy collapsed";
+        copy.textContent = `${message.email || ""} · ${message.subject || "General Inquiry"} · ${formatDate(message.createdAt)} · ${message.message || ""}`;
         row.append(top, copy);
-        if ((message.message || "").length > 120) {
-          const expand = document.createElement("button");
-          expand.className = "table-action message-expand";
-          expand.type = "button";
-          expand.textContent = "Read more";
-          expand.setAttribute("aria-expanded", "false");
-          expand.addEventListener("click", () => {
-            const expanded = expand.getAttribute("aria-expanded") !== "true";
-            expand.setAttribute("aria-expanded", String(expanded));
-            expand.textContent = expanded ? "Show less" : "Read more";
-            copy.classList.toggle("collapsed", !expanded);
-          });
-          row.append(expand);
-        }
+        const expand = document.createElement("button");
+        expand.className = "table-action message-expand";
+        expand.type = "button";
+        expand.textContent = "Read more";
+        expand.setAttribute("aria-expanded", "false");
+        expand.addEventListener("click", () => {
+          const expanded = expand.getAttribute("aria-expanded") !== "true";
+          expand.setAttribute("aria-expanded", String(expanded));
+          expand.textContent = expanded ? "Show less" : "Read more";
+          copy.classList.toggle("collapsed", !expanded);
+        });
+        row.append(expand);
         messages.append(row);
       });
       if (!subscriberItems.length) subscribers.append(emptyState("No subscribers yet."));
-      subscriberItems.slice(0, 8).forEach((subscriber) => {
-        const row = document.createElement("div"); row.className = "list-row"; row.textContent = subscriber.email || ""; subscribers.append(row);
+      subscriberItems.forEach((subscriber) => {
+        const row = document.createElement("div"); row.className = "list-row message-row";
+        const details = document.createElement("span");
+        details.className = "message-copy";
+        details.textContent = `${subscriber.email || ""} · ${formatDate(subscriber.createdAt)}`;
+        const del = document.createElement("button");
+        del.className = "table-action delete";
+        del.textContent = "Delete";
+        del.addEventListener("click", async () => {
+          try {
+            await api(`/admin/subscribers/${encodeURIComponent(subscriber._id)}`, { method: "DELETE" });
+            showToast("Subscriber deleted.");
+            await renderDashboard();
+          } catch (error) { showToast(error.message, true); }
+        });
+        row.append(details, del);
+        subscribers.append(row);
       });
       document.getElementById("copy-emails").addEventListener("click", async () => {
         try { await navigator.clipboard.writeText(subscriberItems.map((item) => item.email).join("\n")); showToast("Subscriber emails copied."); }
