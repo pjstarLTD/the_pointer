@@ -47,6 +47,7 @@
     .nav{display:grid;gap:5px}
     .nav-link{position:relative;min-height:48px;display:flex;align-items:center;gap:14px;padding:0 12px;border-radius:9px;color:#94a3b8;font-size:13px;font-weight:500}
     .nav-link svg{width:18px;height:18px;flex:none}
+    .nav-badge{margin-left:auto;padding:3px 6px;border-radius:999px;background:var(--red);color:#fff;font-size:9px;font-weight:800}
     .nav-link:hover{background:#12171e;color:#fff}
     .nav-link.active{background:rgba(220,27,63,.12);color:#fff;font-weight:700}
     .nav-link.active:before{content:"";position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 2px 2px 0;background:var(--red)}
@@ -185,19 +186,20 @@
       <span class="target" aria-hidden="true"></span>
       <span><span class="brand-name">THE POINTER</span><span class="admin-label">ADMIN</span></span>
     </a>
-    <p class="brand-caption">A Delbuster Media Production</p>
+    <p class="brand-caption">A Delbuster Resource Limited Media Production</p>
     <p class="workspace-label">WORKSPACE</p>
     <nav class="nav" aria-label="Admin workspace">
       <a class="nav-link" href="#dashboard" data-route="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</a>
       <a class="nav-link active" href="#add-episode" data-route="add-episode"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8" stroke-linecap="round"/></svg>Add New Episode</a>
       <a class="nav-link" href="#manage-episodes" data-route="manage-episodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7.5 18.5 4l2 3.5L6 11zM4 7.5V20h16V7.5M9 10l2-4"/></svg>Manage Episodes</a>
+      <a class="nav-link" href="#inquiries" data-route="inquiries"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v12H8l-4 4V5Z"/><path d="M8 9h8M8 13h5"/></svg>Inquiries<span class="nav-badge" id="inquiry-badge" hidden></span></a>
       <a class="nav-link" href="#categories" data-route="categories"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 13 11 22 2 13V4h9z"/><circle cx="7" cy="9" r="1.2"/><path d="m13 3 8 8"/></svg>Categories</a>
       <a class="nav-link" href="#settings" data-route="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 6h14M5 12h14M5 18h14"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/></svg>Settings</a>
       <div class="nav-divider"></div>
       <button class="nav-link" id="logout-button" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 17l5-5-5-5M15 12H3M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7"/></svg>Logout</button>
     </nav>
     <div class="sidebar-bottom">
-      <div class="user-card"><span class="avatar">AU</span><span><span class="user-name">Admin User</span><span class="user-team">Delbuster Media Team</span></span></div>
+      <div class="user-card"><span class="avatar">AU</span><span><span class="user-name">Admin User</span><span class="user-team">Delbuster Resource Limited</span></span></div>
       <p class="sidebar-copy">© 2026 The Pointer · Editorial workspace</p>
     </div>
   </aside>

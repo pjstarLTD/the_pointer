@@ -89,6 +89,18 @@
     return Number.isNaN(parsed.getTime()) ? "—" : new Intl.DateTimeFormat("en-GB", { day: "2-digit", month: "short", year: "numeric" }).format(parsed);
   }
 
+  async function updateInquiryBadge() {
+    const badge = document.getElementById("inquiry-badge");
+    if (!badge || !token()) return;
+    try {
+      const stats = await api("/admin/stats");
+      badge.textContent = String(stats.unreadInquiryCount || 0);
+      badge.hidden = !stats.unreadInquiryCount;
+    } catch (error) {
+      console.error("Could not refresh the unread inquiry count:", error);
+    }
+  }
+
   async function loadCategories() {
     const result = await api("/categories");
     categories = Array.isArray(result) ? result : result.categories || [];
@@ -338,7 +350,7 @@
         </div></div>
         <div class="form-footer"><span class="form-footer-note">ⓘ &nbsp; Published episodes appear in the public Video Hub.</span><div class="button-row"><label class="form-footer-note"><input id="feature-episode" name="isFeatured" type="checkbox"${episode?.isFeatured ? " checked" : ""}> Feature this episode on the homepage</label><button class="btn" type="button" id="save-draft">Save Draft</button><button class="btn btn-red" type="button" id="publish-episode">↗ &nbsp; Publish Episode</button></div></div>
       </form>
-      <div class="recent-head"><div><p class="eyebrow">THE VIDEO HUB</p><h2 class="recent-title">Recent Episodes</h2><p class="page-description">The featured episode appears in the big 'Watch Latest Episode' card on the website.</p></div><a class="link-red" href="/index.html#watch-full-episodes" target="_blank" rel="noopener">View all episodes <span>→</span></a></div>
+      <div class="recent-head"><div><p class="eyebrow">THE VIDEO HUB</p><h2 class="recent-title">Recent Episodes</h2><p class="page-description">The featured episode appears in the big 'Watch Latest Episode' card on the website.</p></div><a class="link-red" href="/pointer#watch-full-episodes" target="_blank" rel="noopener">View all episodes <span>→</span></a></div>
       <div class="panel" id="recent-panel"></div>`;
     if (!episode) {
       const highest = episodes.reduce((max, item) => Math.max(max, Number(item.number) || 0), 0);
@@ -641,13 +653,14 @@
 
   async function renderDashboard() {
     breadcrumb.textContent = "Dashboard";
-    root.innerHTML = '<h1 class="page-title">Dashboard</h1><p class="page-description">Your editorial overview.</p><p class="page-description" id="episode-limit-counter"></p><div class="stats" id="stats"></div><div class="dashboard-grid"><section class="panel"><div class="panel-head"><h2 class="panel-title">Recent messages</h2></div><div id="messages-list"></div></section><section class="panel"><div class="panel-head"><h2 class="panel-title">Subscribers</h2><div class="button-row"><button class="btn" id="copy-emails">Copy emails</button><button class="btn" id="export-emails">Download CSV</button></div></div><div id="subscriber-list"></div></section></div>';
+    root.innerHTML = '<h1 class="page-title">Dashboard</h1><p class="page-description">Your editorial overview.</p><p class="page-description" id="episode-limit-counter"></p><div class="stats" id="stats"></div><div class="dashboard-grid"><section class="panel"><div class="panel-head"><h2 class="panel-title">Recent inquiries</h2><a class="link-red" href="#inquiries">View all</a></div><div id="recent-inquiries"></div></section><section class="panel"><div class="panel-head"><h2 class="panel-title">Pointer messages</h2></div><div id="messages-list"></div></section><section class="panel"><div class="panel-head"><h2 class="panel-title">Subscribers</h2><div class="button-row"><button class="btn" id="copy-emails">Copy emails</button><button class="btn" id="export-emails">Download CSV</button></div></div><div id="subscriber-list"></div></section></div>';
     const stats = document.getElementById("stats");
     const messages = document.getElementById("messages-list");
     const subscribers = document.getElementById("subscriber-list");
+    const recentInquiries = document.getElementById("recent-inquiries");
     try {
-      const [messagesResult, subscriberResult, statsResult, limitResult] = await Promise.all([
-        api("/admin/messages"), api("/admin/subscribers"), api("/admin/stats"), loadEpisodeLimit()
+      const [messagesResult, subscriberResult, statsResult, limitResult, inquiryResult] = await Promise.all([
+        api("/admin/messages"), api("/admin/subscribers"), api("/admin/stats"), loadEpisodeLimit(), api("/admin/inquiries")
       ]);
       episodeLimit = limitResult;
       document.getElementById("episode-limit-counter").textContent = episodeLimitLabel();
@@ -657,13 +670,31 @@
         ["Total episodes", statsResult.totalEpisodes],
         ["Published", statsResult.publishedEpisodes],
         ["Drafts", statsResult.draftEpisodes],
-        ["Subscribers", statsResult.subscriberCount]
+        ["Subscribers", statsResult.subscriberCount],
+        ["New inquiries", statsResult.newInquiryCount]
       ];
+      const badge = document.getElementById("inquiry-badge");
+      badge.textContent = String(statsResult.unreadInquiryCount || 0);
+      badge.hidden = !statsResult.unreadInquiryCount;
       counts.forEach(([label, count]) => {
         const card = document.createElement("div"); card.className = "stat-card";
         const name = document.createElement("div"); name.className = "stat-name"; name.textContent = label;
         const value = document.createElement("div"); value.className = "stat-value"; value.textContent = count;
         card.append(name, value); stats.append(card);
+      });
+      const inquiryItems = Array.isArray(inquiryResult) ? inquiryResult : inquiryResult.inquiries || [];
+      if (!inquiryItems.length) recentInquiries.append(emptyState("No inquiries yet."));
+      inquiryItems.slice(0, 5).forEach((inquiry) => {
+        const row = document.createElement("div"); row.className = "list-row";
+        const top = document.createElement("div"); top.className = "message-row";
+        const name = document.createElement("span"); name.className = "message-name"; name.textContent = inquiry.fullName;
+        const status = document.createElement("span"); status.className = "status-pill"; status.textContent = inquiry.status;
+        top.append(name, status);
+        const details = document.createElement("div"); details.className = "message-copy";
+        details.textContent = `${inquiry.areaOfInterest} · ${formatDate(inquiry.createdAt)}`;
+        row.append(top, details);
+        row.addEventListener("click", () => { location.hash = "inquiries"; });
+        recentInquiries.append(row);
       });
       if (!messageItems.length) messages.append(emptyState("No messages yet."));
       messageItems.forEach((message) => {
@@ -795,7 +826,7 @@
 
   async function renderSettings() {
     breadcrumb.textContent = "Dashboard > Settings";
-    root.innerHTML = '<h1 class="page-title">Settings</h1><p class="page-description">Manage public links and Cloudinary upload configuration.</p><form class="panel" id="settings-form"><div class="panel-head"><h2 class="panel-title">Site settings</h2></div><div class="settings-grid"><div class="field"><label for="setting-youtube">YouTube URL</label><input class="settings-input" id="setting-youtube" name="youtubeUrl"></div><div class="field"><label for="setting-instagram">Instagram URL</label><input class="settings-input" id="setting-instagram" name="instagramUrl"></div><div class="field"><label for="setting-facebook">Facebook URL</label><input class="settings-input" id="setting-facebook" name="facebookUrl"></div><div class="field"><label for="setting-whatsapp">WhatsApp URL</label><input class="settings-input" id="setting-whatsapp" name="whatsappUrl"></div><div class="field"><label for="setting-cloud">Cloudinary Cloud Name</label><input class="settings-input" id="setting-cloud" name="cloudinaryCloudName"></div><div class="field"><label for="setting-preset">Unsigned Upload Preset</label><input class="settings-input" id="setting-preset" name="cloudinaryUploadPreset"></div></div><div class="form-footer"><span class="form-footer-note">Public API exposes social links only. Upload credentials remain private.</span><button class="btn btn-red" type="submit">Save Settings</button></div></form>';
+    root.innerHTML = '<h1 class="page-title">Settings</h1><p class="page-description">Manage company contact details, public links and Cloudinary upload configuration.</p><form class="panel" id="settings-form"><div class="panel-head"><h2 class="panel-title">Site settings</h2></div><div class="settings-grid"><div class="field"><label for="setting-company-email">Company email</label><input class="settings-input" id="setting-company-email" name="companyEmail" type="email" maxlength="254"></div><div class="field"><label for="setting-company-phone">Company phone</label><input class="settings-input" id="setting-company-phone" name="companyPhone" type="tel" maxlength="40"></div><div class="field"><label for="setting-youtube">YouTube URL</label><input class="settings-input" id="setting-youtube" name="youtubeUrl"></div><div class="field"><label for="setting-instagram">Instagram URL</label><input class="settings-input" id="setting-instagram" name="instagramUrl"></div><div class="field"><label for="setting-facebook">Facebook URL</label><input class="settings-input" id="setting-facebook" name="facebookUrl"></div><div class="field"><label for="setting-whatsapp">Company WhatsApp number or URL</label><input class="settings-input" id="setting-whatsapp" name="whatsappUrl" type="text"></div><div class="field"><label for="setting-cloud">Cloudinary Cloud Name</label><input class="settings-input" id="setting-cloud" name="cloudinaryCloudName"></div><div class="field"><label for="setting-preset">Unsigned Upload Preset</label><input class="settings-input" id="setting-preset" name="cloudinaryUploadPreset"></div></div><div class="form-footer"><span class="form-footer-note">Contact details are shared across both public websites. Upload credentials remain private.</span><button class="btn btn-red" type="submit">Save Settings</button></div></form>';
     const form = document.getElementById("settings-form");
     try {
       settings = await api("/admin/settings");
@@ -814,10 +845,133 @@
     });
   }
 
+  const inquiryAreas = [
+    "Media Consultancy & Training",
+    "Conference & Event Organization",
+    "General Merchandise & Contracts",
+    "Import & Export Services",
+    "Partnership with The Pointer",
+    "Other"
+  ];
+
+  async function renderInquiries() {
+    breadcrumb.textContent = "Dashboard > Inquiries";
+    root.innerHTML = `<h1 class="page-title">Inquiries</h1><p class="page-description">Review and manage company website inquiries.</p>
+      <div class="toolbar"><input class="search-input" id="inquiry-search" placeholder="Search inquiries" aria-label="Search inquiries">
+      <select id="inquiry-status-filter" aria-label="Filter by status"><option value="">All statuses</option><option value="new">New</option><option value="contacted">Contacted</option><option value="closed">Closed</option></select>
+      <select id="inquiry-area-filter" aria-label="Filter by area"><option value="">All areas</option>${inquiryAreas.map((area) => `<option value="${escapeHtml(area)}">${escapeHtml(area)}</option>`).join("")}</select>
+      <button class="btn" id="inquiry-export">Download CSV</button></div><div class="panel" id="inquiry-table"></div>`;
+    const panel = document.getElementById("inquiry-table");
+    const search = document.getElementById("inquiry-search");
+    const status = document.getElementById("inquiry-status-filter");
+    const area = document.getElementById("inquiry-area-filter");
+
+    const refresh = async () => {
+      const params = new URLSearchParams();
+      if (search.value.trim()) params.set("search", search.value.trim());
+      if (status.value) params.set("status", status.value);
+      if (area.value) params.set("area", area.value);
+      const items = await api(`/admin/inquiries?${params.toString()}`);
+      panel.replaceChildren();
+      if (!items.length) { panel.append(emptyState("No inquiries match these filters.")); return; }
+      const table = document.createElement("table");
+      table.style.minWidth = "920px";
+      const head = document.createElement("thead");
+      const heading = document.createElement("tr");
+      ["DATE", "NAME", "ORGANIZATION", "CONTACT", "AREA OF INTEREST", "STATUS", "ACTIONS"].forEach((label) => {
+        const th = document.createElement("th"); th.textContent = label; heading.append(th);
+      });
+      head.append(heading); table.append(head);
+      const body = document.createElement("tbody");
+      items.forEach((inquiry) => {
+        const row = document.createElement("tr");
+        row.style.cursor = "pointer";
+        const values = [
+          formatDate(inquiry.createdAt),
+          inquiry.fullName,
+          inquiry.organization || "—",
+          "",
+          inquiry.areaOfInterest,
+          inquiry.status
+        ];
+        values.forEach((value, index) => {
+          const td = document.createElement("td");
+          if (index === 3) {
+            const email = document.createElement("a"); email.href = `mailto:${inquiry.email}`; email.textContent = inquiry.email;
+            td.append(email);
+            if (inquiry.phone) {
+              const phone = document.createElement("a"); phone.href = `tel:${inquiry.phone.replace(/[^\d+]/g, "")}`;
+              phone.textContent = inquiry.phone; phone.style.display = "block"; td.append(phone);
+            }
+          } else if (index === 5) {
+            const badge = document.createElement("span"); badge.className = "status-pill"; badge.textContent = value; td.append(badge);
+          } else td.textContent = value || "—";
+          row.append(td);
+        });
+        const actions = document.createElement("td");
+        const read = document.createElement("button"); read.className = "table-action"; read.textContent = inquiry.read ? "Read" : "Mark read";
+        read.addEventListener("click", async (event) => {
+          event.stopPropagation();
+          try { await api(`/admin/inquiries/${encodeURIComponent(inquiry._id)}`, { method: "PATCH", body: JSON.stringify({ read: !inquiry.read }) }); await renderInquiries(); await updateInquiryBadge(); }
+          catch (error) { showToast(error.message, true); }
+        });
+        const statusAction = document.createElement("button"); statusAction.className = "table-action"; statusAction.style.marginLeft = "8px";
+        statusAction.textContent = inquiry.status === "new" ? "Contacted" : inquiry.status === "contacted" ? "Close" : "Reopen";
+        statusAction.addEventListener("click", async (event) => {
+          event.stopPropagation();
+          const nextStatus = inquiry.status === "new" ? "contacted" : inquiry.status === "contacted" ? "closed" : "new";
+          try { await api(`/admin/inquiries/${encodeURIComponent(inquiry._id)}`, { method: "PATCH", body: JSON.stringify({ status: nextStatus }) }); await renderInquiries(); await updateInquiryBadge(); }
+          catch (error) { showToast(error.message, true); }
+        });
+        const del = document.createElement("button"); del.className = "table-action delete"; del.style.marginLeft = "8px"; del.textContent = "Delete";
+        del.addEventListener("click", (event) => {
+          event.stopPropagation();
+          confirm(`Delete inquiry from “${inquiry.fullName}”? This cannot be undone.`, async () => {
+            try { await api(`/admin/inquiries/${encodeURIComponent(inquiry._id)}`, { method: "DELETE" }); showToast("Inquiry deleted."); await renderInquiries(); await updateInquiryBadge(); }
+            catch (error) { showToast(error.message, true); }
+          }, "Delete inquiry");
+        });
+        actions.append(read, statusAction, del); row.append(actions);
+        const messageRow = document.createElement("tr"); messageRow.hidden = true;
+        const messageCell = document.createElement("td"); messageCell.colSpan = 7; messageCell.className = "message-copy"; messageCell.textContent = inquiry.message;
+        messageRow.append(messageCell);
+        row.addEventListener("click", async () => {
+          messageRow.hidden = !messageRow.hidden;
+          if (!inquiry.read) {
+            try { await api(`/admin/inquiries/${encodeURIComponent(inquiry._id)}`, { method: "PATCH", body: JSON.stringify({ read: true }) }); inquiry.read = true; read.textContent = "Read"; await updateInquiryBadge(); }
+            catch (error) { showToast(error.message, true); }
+          }
+        });
+        body.append(row, messageRow);
+      });
+      table.append(body);
+      const container = document.createElement("div"); container.className = "table-wrap"; container.append(table); panel.append(container);
+    };
+    let searchTimer;
+    search.addEventListener("input", () => {
+      window.clearTimeout(searchTimer);
+      searchTimer = window.setTimeout(() => refresh().catch((error) => showToast(error.message, true)), 250);
+    });
+    status.addEventListener("change", () => refresh().catch((error) => showToast(error.message, true)));
+    area.addEventListener("change", () => refresh().catch((error) => showToast(error.message, true)));
+    document.getElementById("inquiry-export").addEventListener("click", async () => {
+      try {
+        const response = await fetch(`${API_BASE}/admin/inquiries/export`, { headers: { Authorization: `Bearer ${token()}` } });
+        if (response.status === 401) { logout(); throw new Error("Your session expired. Please sign in again."); }
+        if (!response.ok) throw new Error("Could not export inquiries.");
+        const url = URL.createObjectURL(await response.blob());
+        const link = document.createElement("a"); link.href = url; link.download = "inquiries.csv"; link.click(); URL.revokeObjectURL(url);
+      } catch (error) { showToast(error.message, true); }
+    });
+    try { await refresh(); await updateInquiryBadge(); }
+    catch (error) { panel.replaceChildren(emptyState(error.message)); }
+  }
+
   const routeRenderers = {
     dashboard: renderDashboard,
     "add-episode": renderAddEpisode,
     "manage-episodes": renderManageEpisodes,
+    inquiries: renderInquiries,
     categories: renderCategories,
     settings: renderSettings
   };
@@ -829,6 +983,7 @@
     if (!routeRenderers[routeName]) { location.hash = "add-episode"; return; }
     editingId = routeName === "add-episode" ? editingId : null;
     setActive(routeName);
+    updateInquiryBadge();
     try { await routeRenderers[routeName](); }
     catch (error) {
       console.error("Admin page route failed:", error);

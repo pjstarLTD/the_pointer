@@ -6,6 +6,8 @@ const settingSchema = new mongoose.Schema({
   instagramUrl: { type: String, trim: true, maxlength: 500, default: "" },
   facebookUrl: { type: String, trim: true, maxlength: 500, default: "" },
   whatsappUrl: { type: String, trim: true, maxlength: 500, default: "" },
+  companyEmail: { type: String, trim: true, lowercase: true, maxlength: 254, default: "delbusterglobal@gmail.com" },
+  companyPhone: { type: String, trim: true, maxlength: 40, default: "" },
   cloudinaryCloudName: { type: String, trim: true, maxlength: 100, default: "" },
   cloudinaryUploadPreset: { type: String, trim: true, maxlength: 100, default: "" }
 }, { timestamps: true });

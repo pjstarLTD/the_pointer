@@ -4,6 +4,7 @@ const Category = require("../models/Category");
 const Setting = require("../models/Setting");
 const ContactMessage = require("../models/ContactMessage");
 const Subscriber = require("../models/Subscriber");
+const Inquiry = require("../models/Inquiry");
 const requireAdmin = require("../middleware/auth");
 const { cleanString, isEmail, isHttpUrl } = require("../middleware/validation");
 const { extractVideoUrl } = require("../public/js/media");
@@ -212,6 +213,65 @@ router.delete("/categories/:id", tryRoute(async (req, res) => {
   return res.status(204).end();
 }));
 
+router.get("/inquiries/export", tryRoute(async (req, res) => {
+  const inquiries = await Inquiry.find().sort({ createdAt: -1 }).lean();
+  const cell = (value) => `"${String(value ?? "").replace(/^[=+\-@]/, "'$&").replace(/"/g, '""')}"`;
+  const columns = ["createdAt", "fullName", "email", "organization", "phone", "areaOfInterest", "message", "status", "read"];
+  const rows = inquiries.map((item) => columns.map((column) => cell(column === "createdAt" ? item.createdAt?.toISOString?.() || "" : item[column])).join(","));
+  return res.type("text/csv").attachment("inquiries.csv").send([columns.join(","), ...rows].join("\r\n"));
+}));
+
+router.get("/inquiries", tryRoute(async (req, res) => {
+  const query = {};
+  const status = cleanString(req.query.status, 20);
+  const area = cleanString(req.query.area, 100);
+  const search = cleanString(req.query.search, 150);
+  if (status && !["new", "contacted", "closed"].includes(status)) {
+    return res.status(400).json({ error: "Choose a valid inquiry status." });
+  }
+  if (area && ![
+    "Media Consultancy & Training",
+    "Conference & Event Organization",
+    "General Merchandise & Contracts",
+    "Import & Export Services",
+    "Partnership with The Pointer",
+    "Other"
+  ].includes(area)) {
+    return res.status(400).json({ error: "Choose a valid area of interest." });
+  }
+  if (status) query.status = status;
+  if (area) query.areaOfInterest = area;
+  if (search) {
+    const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    query.$or = ["fullName", "email", "organization", "phone", "message"].map((field) => ({ [field]: { $regex: escaped, $options: "i" } }));
+  }
+  return res.json(await Inquiry.find(query).sort({ createdAt: -1 }).lean());
+}));
+
+router.patch("/inquiries/:id", tryRoute(async (req, res) => {
+  const updates = {};
+  if (req.body?.status !== undefined) {
+    if (!["new", "contacted", "closed"].includes(req.body.status)) {
+      return res.status(400).json({ error: "Status must be new, contacted, or closed." });
+    }
+    updates.status = req.body.status;
+  }
+  if (req.body?.read !== undefined) {
+    if (typeof req.body.read !== "boolean") return res.status(400).json({ error: "Read must be true or false." });
+    updates.read = req.body.read;
+  }
+  if (!Object.keys(updates).length) return res.status(400).json({ error: "Provide a status or read value to update." });
+  const inquiry = await Inquiry.findByIdAndUpdate(req.params.id, { $set: updates }, { new: true, runValidators: true });
+  if (!inquiry) return res.status(404).json({ error: "Inquiry not found." });
+  return res.json(inquiry);
+}));
+
+router.delete("/inquiries/:id", tryRoute(async (req, res) => {
+  const inquiry = await Inquiry.findByIdAndDelete(req.params.id);
+  if (!inquiry) return res.status(404).json({ error: "Inquiry not found." });
+  return res.status(204).end();
+}));
+
 router.get("/settings", tryRoute(async (req, res) => {
   const settings = await Setting.findOneAndUpdate(
     { singleton: "main" },
@@ -222,12 +282,21 @@ router.get("/settings", tryRoute(async (req, res) => {
 }));
 
 router.put("/settings", tryRoute(async (req, res) => {
-  const fields = ["youtubeUrl", "instagramUrl", "facebookUrl", "whatsappUrl", "cloudinaryCloudName", "cloudinaryUploadPreset"];
+  const fields = ["youtubeUrl", "instagramUrl", "facebookUrl", "whatsappUrl", "companyEmail", "companyPhone", "cloudinaryCloudName", "cloudinaryUploadPreset"];
   const data = {};
   for (const field of fields) {
     if (req.body?.[field] === undefined) continue;
-    const value = cleanString(req.body[field], 500);
-    if (["youtubeUrl", "instagramUrl", "facebookUrl", "whatsappUrl"].includes(field) && value && !isHttpUrl(value)) {
+    const value = cleanString(req.body[field], field === "companyEmail" ? 254 : field === "companyPhone" ? 40 : 500);
+    if (field === "companyEmail" && value && !isEmail(value)) {
+      return res.status(400).json({ error: "Company email must be a valid email address." });
+    }
+    if (field === "companyPhone" && value && !/^\+?[\d\s().-]{5,40}$/.test(value)) {
+      return res.status(400).json({ error: "Company phone must contain a valid phone number." });
+    }
+    if (field === "whatsappUrl" && value && !isHttpUrl(value) && !/^\+?[\d\s().-]{5,40}$/.test(value)) {
+      return res.status(400).json({ error: "Company WhatsApp must be a phone number or valid HTTP(S) URL." });
+    }
+    if (["youtubeUrl", "instagramUrl", "facebookUrl"].includes(field) && value && !isHttpUrl(value)) {
       return res.status(400).json({ error: `${field} must be a valid HTTP(S) URL.` });
     }
     data[field] = value;
@@ -281,13 +350,15 @@ router.delete("/subscribers/:id", tryRoute(async (req, res) => {
 }));
 
 router.get("/stats", tryRoute(async (req, res) => {
-  const [totalEpisodes, publishedEpisodes, draftEpisodes, messageCount, unreadMessageCount, subscriberCount] = await Promise.all([
+  const [totalEpisodes, publishedEpisodes, draftEpisodes, messageCount, unreadMessageCount, subscriberCount, newInquiryCount, unreadInquiryCount] = await Promise.all([
     Episode.countDocuments(),
     Episode.countDocuments({ status: "published" }),
     Episode.countDocuments({ status: "draft" }),
     ContactMessage.countDocuments(),
     ContactMessage.countDocuments({ read: false }),
-    Subscriber.countDocuments()
+    Subscriber.countDocuments(),
+    Inquiry.countDocuments({ status: "new" }),
+    Inquiry.countDocuments({ read: false })
   ]);
   return res.json({
     totalEpisodes,
@@ -295,7 +366,9 @@ router.get("/stats", tryRoute(async (req, res) => {
     draftEpisodes,
     messageCount,
     unreadMessageCount,
-    subscriberCount
+    subscriberCount,
+    newInquiryCount,
+    unreadInquiryCount
   });
 }));
 

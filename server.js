@@ -71,9 +71,11 @@ app.use(express.urlencoded({ extended: false, limit: "50kb" }));
 app.use("/api", publicRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
-app.use(express.static(path.join(__dirname, "public")));
+app.get("/pointer", (req, res) => res.sendFile(path.join(publicDirectory, "pointer.html")));
+app.get("/pointer.html", (req, res) => res.sendFile(path.join(publicDirectory, "pointer.html")));
 app.get("/", (req, res) => res.sendFile(path.join(publicDirectory, "index.html")));
 app.get("/admin", (req, res) => res.sendFile(path.join(publicDirectory, "admin.html")));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res) => res.status(404).json({ error: "Not found." }));
 app.use((error, req, res, next) => {
@@ -98,7 +100,7 @@ async function seedInitialData() {
         number: 11,
         title: "The big conversation: building an economy that works",
         category: "Economy",
-        show: "The Pointer Prime",
+        show: "The Pointer",
         duration: "26:40",
         description: "The big conversation about building an economy that works.",
         thumbnailUrl: "/images/hub-1.jpg",
@@ -110,7 +112,7 @@ async function seedInitialData() {
         number: 10,
         title: "From a local idea to a business with global ambition",
         category: "Business",
-        show: "The Enterprise Interview",
+        show: "The Pointer",
         duration: "32:15",
         description: "A local idea grows into a business with global ambition.",
         thumbnailUrl: "/images/hub-2.jpg",
@@ -122,7 +124,7 @@ async function seedInitialData() {
         number: 9,
         title: "Made here: a new generation on the factory floor",
         category: "Economy",
-        show: "Inside Nigeria",
+        show: "The Pointer",
         duration: "18:50",
         description: "Meet a new generation on the factory floor.",
         thumbnailUrl: "/images/hub-3.jpg",

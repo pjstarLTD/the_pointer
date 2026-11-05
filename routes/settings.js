@@ -10,7 +10,9 @@ router.get("/", async (req, res, next) => {
       youtubeUrl: settings?.youtubeUrl || "https://youtube.com/@thepointer",
       instagramUrl: settings?.instagramUrl || "",
       facebookUrl: settings?.facebookUrl || "",
-      whatsappUrl: settings?.whatsappUrl || ""
+      whatsappUrl: settings?.whatsappUrl || "",
+      companyEmail: settings?.companyEmail || "delbusterglobal@gmail.com",
+      companyPhone: settings?.companyPhone || ""
     });
   } catch (error) {
     return next(error);

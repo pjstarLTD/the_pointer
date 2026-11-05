@@ -1,802 +1,546 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <script>
-    try {
-      document.documentElement.dataset.theme = localStorage.getItem("pointer-theme") === "dark" ? "dark" : "light";
-    } catch (error) {
-      document.documentElement.dataset.theme = "light";
-    }
-  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b0e13">
-  <meta name="description" content="The Pointer: independent investigative news, politics, and lifestyle from Nigeria.">
-  <title>The Pointer | Independent Perspective. Global Reach.</title>
+  <meta name="theme-color" content="#0b1228">
+  <meta name="description" content="Delbuster Resource Limited is a dynamic enterprise delivering media consultancy, conferences, general merchandise and international trade.">
+  <title>Delbuster Resource Limited | Dynamic Enterprise, Global Consultancy &amp; General Merchandise</title>
+  <link rel="icon" href="/images/delbuster-favicon.png" type="image/png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root {
-      color-scheme: light;
-      --bg: #EAF0F7;
-      --card: #FFFFFF;
-      --line: rgba(15, 23, 42, 0.10);
-      --text: #0B1220;
-      --muted: #475569;
-      --red: #C8102E;
-      --page: var(--bg);
-      --panel: var(--card);
-      --panel-raised: #edf1f7;
-      --subtle: #64748b;
-      --accent: var(--red);
-      --accent-hover: #A30D26;
-      --border: var(--line);
-      --input: #fff;
-      --input-text: #111827;
-      --shadow: rgba(15, 23, 42, .15);
+    :root{--blue:#2563eb;--navy:#0b1228;--navy-2:#10234a;--ink:#0b1228;--muted:#59708f;--line:#dce6f3;--pale:#f8fafc;--white:#fff}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:90px}
+    body{margin:0;color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    :focus-visible{outline:3px solid #78a5ff;outline-offset:3px}
+    [hidden]{display:none!important}
+    .wrap{width:min(1280px,calc(100% - 64px));margin-inline:auto}
+    .utility{height:40px;background:#0b1228;color:#8da8cb;font-size:10px}
+    .utility-inner{height:100%;display:flex;align-items:center;justify-content:space-between}
+    .utility-group,.utility-item{display:flex;align-items:center;gap:9px}
+    .utility-group{gap:24px}.utility-item svg{width:13px;height:13px;color:#3b82f6}
+    .utility-right{display:flex;align-items:center;gap:24px}.utility-date{letter-spacing:.04em}
+    .blue-dot{width:5px;height:5px;border-radius:50%;background:#3b82f6}
+    .nav{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid #edf1f7}
+    .nav-inner{height:88px;display:flex;align-items:center;justify-content:space-between;gap:26px}
+    .company-brand{display:flex;align-items:center;gap:14px;min-width:250px}
+    .company-brand img{width:auto;height:46px;object-fit:contain}
+    .brand-name{font-size:21px;font-weight:800;letter-spacing:.035em;line-height:1}
+    .brand-sub{display:block;margin-top:5px;color:var(--blue);font-size:8px;font-weight:800;letter-spacing:.26em}
+    .nav-links{display:flex;align-items:center;gap:32px}
+    .nav-link{position:relative;padding:14px 0;font-size:13px;font-weight:500;color:#18233d;white-space:nowrap}
+    .nav-link.active{color:var(--blue)}
+    .nav-link.active:after{content:"";position:absolute;left:0;bottom:5px;width:5px;height:5px;border-radius:50%;background:var(--blue)}
+    .button{min-height:50px;display:inline-flex;align-items:center;justify-content:center;gap:14px;padding:0 24px;border:1px solid transparent;border-radius:6px;background:var(--blue);color:#fff;font-size:13px;font-weight:700;box-shadow:0 5px 13px #2563eb38;transition:transform .18s,background .18s}
+    .button:hover{background:#1d4ed8;transform:translateY(-1px)}
+    .button svg{width:15px;height:15px}
+    .nav-cta{min-height:48px;padding-inline:24px}
+    .menu-button{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+    .menu-button svg{width:21px;height:21px}
+    .hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 93% 36%,#1d3d72 0,transparent 34%),linear-gradient(112deg,#0b1228 0%,#101b38 57%,#152a52 100%);color:white}
+    .hero-main{min-height:572px;display:grid;grid-template-columns:1.04fr .96fr;align-items:center;gap:52px;padding-top:38px;padding-bottom:38px}
+    .eyebrow{display:flex;align-items:center;gap:11px;color:var(--blue);font-size:10px;font-weight:800;letter-spacing:.2em}
+    .eyebrow:before{content:"";width:3px;height:15px;border-radius:2px;background:#3b82f6}
+    .hero .eyebrow{color:#58a0ff}
+    .hero h1{max-width:575px;margin:27px 0 29px;font-size:clamp(38px,4vw,54px);font-weight:800;letter-spacing:-.055em;line-height:1.06}
+    .hero-copy{max-width:575px;margin:0;color:#9bb4d3;font-size:15px;line-height:1.9}
+    .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+    .chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid #ffffff27;border-radius:999px;background:#ffffff12;color:#e2ebf8;font-size:10px;white-space:nowrap}
+    .chip svg{width:13px;height:13px;color:#54a0ff}
+    .hero-actions{display:flex;gap:14px;margin-top:31px}
+    .button-outline{background:#ffffff12;border-color:#ffffff46;box-shadow:none}
+    .button-outline:hover{background:#ffffff22}
+    .hero-card{overflow:hidden;border:1px solid #ffffff1f;border-radius:24px;background:#13264b;box-shadow:0 25px 55px #00000023}
+    .hero-card-art{position:relative;height:320px;display:grid;place-items:center;overflow:hidden;background-color:#10254c;background-image:linear-gradient(#ffffff0b 1px,transparent 1px),linear-gradient(90deg,#ffffff0b 1px,transparent 1px),radial-gradient(ellipse at 50% 40%,#1c3e73,#0b1936 75%);background-size:100px 80px,100px 80px,auto}
+    .hero-card-art img{height:280px;width:auto;max-width:72%;object-fit:contain;background:#fff}
+    .perspective{position:absolute;top:16px;right:16px;padding:6px 12px;border:1px solid #ffffff3b;border-radius:999px;background:#ffffff14;color:#e6eefb;font-size:8px;font-weight:800;letter-spacing:.17em}
+    .perspective:before{content:"";display:inline-block;width:5px;height:5px;margin-right:8px;vertical-align:1px;border-radius:50%;background:#60a5fa}
+    .hero-card-copy{padding:20px 23px 23px;background:#13264b}
+    .short-rule{width:28px;height:3px;border-radius:2px;background:#3b82f6}
+    .hero-card-copy h2{margin:11px 0 8px;font-size:21px;font-weight:750;letter-spacing:-.035em;line-height:1.25}
+    .hero-card-copy>p{margin:0;color:#63a7ff;font-size:10px;letter-spacing:.19em}
+    .stats-line{display:grid;grid-template-columns:.7fr 1.15fr 1fr;margin-top:23px}
+    .stat{padding-inline:19px;border-left:1px solid #ffffff23}
+    .stat:first-child{padding-left:0;border-left:0}
+    .stat strong{display:block;font-size:26px;font-weight:750;line-height:1}
+    .stat span{display:block;margin-top:7px;color:#9ab0d0;font-size:8px;letter-spacing:.13em;white-space:nowrap}
+    .hero-ribbon{background:#1b294a;border-top:1px solid #ffffff12}
+    .ribbon-inner{min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:20px;color:#dce7f6;font-size:10px;font-weight:600}
+    .ribbon-title{color:#59a0ff;font-size:9px;font-weight:800;letter-spacing:.2em}
+    .ribbon-item{display:flex;align-items:center;gap:8px}.ribbon-item svg{width:13px;color:#60a5fa}
+    .section{padding:88px 0}
+    .services{background:#f8fafc}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:40px;margin-bottom:42px}
+    .section-head h2,.about h2,.contact h2{margin:15px 0 0;font-size:42px;font-weight:800;letter-spacing:-.055em;line-height:1.12}
+    .section-intro{max-width:420px;margin:0 30px 4px 0;color:var(--muted);font-size:14px;line-height:1.8}
+    .service-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+    .service-card{min-height:345px;display:flex;flex-direction:column;padding:28px 27px 22px;border:1px solid #dfe7f1;border-top:3px solid #3168ff;border-radius:12px;background:#fff;box-shadow:0 8px 20px #13275009;transition:transform .2s,box-shadow .2s;cursor:pointer}
+    .service-card:hover{transform:translateY(-4px);box-shadow:0 15px 28px #13275015}
+    .icon-tile{width:50px;height:50px;display:grid;place-items:center;border:1px solid #e1ecff;border-radius:11px;background:#eef5ff;color:#2763ff;flex:none}
+    .icon-tile svg{width:24px;height:24px}
+    .service-card h3{min-height:48px;margin:20px 0 11px;font-size:19px;font-weight:750;letter-spacing:-.035em;line-height:1.3}
+    .service-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.9}
+    .service-link{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:16px;border-top:1px solid #e0e9f4;color:#165dff;font-size:10px;font-weight:750;letter-spacing:.02em}
+    .service-link svg{width:15px;height:15px}
+    .pointer-feature{padding:0 0 54px;background:#f8fafc}
+    .pointer-card{min-height:360px;display:grid;grid-template-columns:.85fr 1.5fr;align-items:center;gap:44px;padding:52px;border-radius:21px;background:linear-gradient(110deg,#0b1228,#112750);color:#fff;box-shadow:0 24px 45px #0b122828}
+    .pointer-brand{padding-right:44px;border-right:1px solid #ffffff24}
+    .subsidiary{display:flex;align-items:center;gap:14px;color:#64a5ff;font-size:8px;font-weight:800;letter-spacing:.22em}
+    .logo-box{width:42px;height:42px;display:grid;place-items:center;background:#fff}
+    .logo-box img{height:33px;width:auto;object-fit:contain}
+    .pointer-rule{height:2px;margin:24px 0 14px;background:#2465ff}
+    .pointer-wordmark{font-family:Lora,Georgia,serif;font-size:58px;letter-spacing:-.06em;line-height:1.05}
+    .pointer-motto{display:flex;justify-content:space-between;gap:12px;margin-top:14px;padding-top:11px;border-top:1px solid #ffffff1c;color:#9ab0d0;font-size:8px;letter-spacing:.17em}
+    .pointer-copy .eyebrow{margin-bottom:20px}
+    .pointer-copy h2{margin:0 0 18px;font-size:31px;font-weight:750;letter-spacing:-.04em}
+    .pointer-copy>p{max-width:735px;margin:0;color:#9bb4d3;font-size:14px;line-height:1.8}
+    .pointer-copy .chips{margin-top:19px}
+    .button-white{margin-top:20px;background:#fff;color:#152341;box-shadow:0 5px 14px #0002}
+    .button-white:hover{background:#eef4ff}
+    .about{background:#fff}
+    .about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:86px;align-items:start}
+    .about h2{max-width:550px;margin-top:25px}
+    .about-copy>p{max-width:530px;margin:24px 0 0;color:var(--muted);font-size:14px;line-height:2}
+    .about-copy>strong{display:block;margin-top:24px;font-size:13px;line-height:1.6}
+    .about-logo{height:86px;width:auto;margin-top:24px;object-fit:contain}
+    .values{padding-top:2px}
+    .value-row{display:flex;align-items:flex-start;gap:20px;padding:18px 0 22px;border-bottom:1px solid #dce6f3}
+    .value-row:last-child{border-bottom:0}
+    .value-row .icon-tile{width:48px;height:48px}
+    .value-row h3{margin:1px 0 8px;font-size:18px;font-weight:750;letter-spacing:-.025em}
+    .value-row p{margin:0;color:var(--muted);font-size:13px;line-height:1.7}
+    .contact{background:#f7f9fc}
+    .contact-grid{display:grid;grid-template-columns:.72fr 1.28fr;gap:70px;align-items:start}
+    .contact h2{max-width:450px;margin-top:24px;font-size:34px}
+    .contact-intro{max-width:430px;margin:24px 0 28px;color:var(--muted);font-size:13px;line-height:1.9}
+    .contact-details{display:grid;gap:20px}
+    .contact-item{display:flex;align-items:center;gap:14px}
+    .contact-item .icon-tile{width:42px;height:42px}
+    .contact-item small{display:block;margin-bottom:5px;color:#2763ff;font-size:8px;font-weight:800;letter-spacing:.14em}
+    .contact-item strong,.contact-item a,.contact-item span{display:block;font-size:13px;font-weight:650;line-height:1.45}
+    .contact-item .secondary{margin-top:2px;color:var(--muted);font-size:12px;font-weight:400}
+    .contact-form-card{padding:31px;border:1px solid #e0e9f4;border-radius:15px;background:#fff;box-shadow:0 11px 28px #12274a0b}
+    .contact-form-card h3{margin:0;font-size:20px;font-weight:800;letter-spacing:-.03em}
+    .form-note{margin:7px 0 23px;color:#7587a2;font-size:11px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:17px 16px}
+    .field{min-width:0}.field.full{grid-column:1/-1}
+    .field label{display:block;margin-bottom:7px;font-size:10px;font-weight:750}
+    .field input,.field select,.field textarea{width:100%;min-height:43px;padding:11px 12px;border:1px solid #dce7f5;border-radius:7px;background:#f8fafc;color:#15213c;font-size:11px}
+    .field textarea{min-height:105px;resize:vertical;line-height:1.6}
+    .field input::placeholder,.field textarea::placeholder{color:#9aaac0}
+    .field-error{min-height:0;margin-top:5px;color:#b42336;font-size:10px}
+    .consent{display:flex;align-items:flex-start;gap:9px;margin:17px 0;color:#7487a2;font-size:10px;line-height:1.6}
+    .consent input{width:15px;height:15px;margin:1px 0 0;accent-color:var(--blue);flex:none}
+    .form-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:18px}
+    .form-bottom .button{min-height:44px}
+    .privacy{display:flex;align-items:center;gap:6px;color:#9aabc1;font-size:9px}
+    .privacy svg{width:13px;height:13px;color:#3478ff}
+    .form-feedback{margin-top:14px;font-size:12px;line-height:1.5}
+    .form-feedback.success{color:#167449}.form-feedback.error{color:#b42336}
+    .honeypot{position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;overflow:hidden!important}
+    .footer{padding:48px 0 28px;background:#0b1228;color:#fff}
+    .footer-grid{display:grid;grid-template-columns:1.6fr .7fr .8fr;gap:70px;padding-bottom:40px}
+    .footer-brand-lockup{display:flex;align-items:center;gap:13px}
+    .footer-brand-lockup img{height:45px;width:auto;object-fit:contain}
+    .footer-brand-lockup strong{font-size:20px;font-weight:800;letter-spacing:.04em}
+    .footer-brand-lockup small{display:block;margin-top:5px;color:#69a4ff;font-size:8px;font-weight:800;letter-spacing:.24em}
+    .footer-brand>p{max-width:380px;margin:20px 0 0;color:#9ab0d0;font-size:12px;line-height:1.9}
+    .footer-column h3{margin:1px 0 18px;color:#57a0ff;font-size:9px;font-weight:800;letter-spacing:.2em}
+    .footer-column a{display:block;width:fit-content;margin:0 0 12px;color:#d4deed;font-size:12px}
+    .footer-column a:hover{color:#70aaff}
+    .footer-column .location-copy{margin-top:16px;color:#9ab0d0;font-size:12px}
+    .copyright{display:flex;justify-content:space-between;gap:20px;padding-top:21px;border-top:1px solid #ffffff19;color:#9ab0d0;font-size:10px}
+    .copyright strong{color:#5d9fff;font-size:8px;font-weight:700;letter-spacing:.2em}
+    @media(max-width:1020px){
+      .wrap{width:min(100% - 48px,900px)}
+      .nav-links{gap:19px}.company-brand{min-width:215px}.nav-cta{padding-inline:16px}
+      .hero-main{gap:30px}.hero h1{font-size:43px}.hero-card-art{height:280px}.hero-card-art img{height:240px}
+      .service-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .about-grid{gap:44px}.contact-grid{gap:38px}.pointer-card{padding:38px;gap:34px}
     }
-
-    :root[data-theme="dark"] {
-      color-scheme: dark;
-      --page: #0b0e13;
-      --panel: #111827;
-      --panel-raised: #151d2b;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --subtle: #718198;
-      --accent: #dc1b3f;
-      --accent-hover: #f02a4f;
-      --border: rgba(148, 163, 184, .14);
-      --input: #fff;
-      --input-text: #111827;
-      --shadow: rgba(0, 0, 0, .35);
+    @media(max-width:760px){
+      .wrap{width:calc(100% - 40px)}
+      .utility{height:auto;min-height:38px}.utility-inner{min-height:38px}.utility-group{gap:12px}.utility-right{gap:12px}
+      .utility-item{gap:6px}.utility-item svg{width:12px}.utility-item a{font-size:9px}
+      .nav-inner{height:72px}.company-brand{min-width:0}.company-brand img{height:41px}.brand-name{font-size:17px}
+      .menu-button{display:grid;place-items:center}.nav-cta{display:none}
+      .nav-links{position:absolute;top:100%;left:0;right:0;display:none;align-items:stretch;gap:0;padding:8px 20px 15px;border-bottom:1px solid var(--line);background:#fff;box-shadow:0 12px 20px #10224712}
+      .nav.nav-open .nav-links{display:flex;flex-direction:column}
+      .nav-link{padding:13px 0}.nav-link.active:after{left:auto;right:4px;bottom:18px}
+      .hero-main{grid-template-columns:1fr;gap:35px;padding-top:58px;padding-bottom:42px}
+      .hero h1{max-width:630px;margin:22px 0;font-size:clamp(39px,8vw,57px)}
+      .hero-copy{font-size:14px}.hero-card{max-width:600px;width:100%;margin-inline:auto}
+      .hero-card-art{height:300px}
+      .ribbon-inner{justify-content:center;flex-wrap:wrap;padding:16px 0;gap:14px 22px}.ribbon-title{width:100%;text-align:center}
+      .section{padding:66px 0}.section-head{align-items:flex-start;flex-direction:column;gap:15px;margin-bottom:28px}
+      .section-head h2,.about h2{font-size:36px}.section-intro{margin:0}
+      .pointer-feature{padding-bottom:38px}.pointer-card{grid-template-columns:1fr;padding:31px;gap:28px}
+      .pointer-brand{padding:0 0 26px;border-right:0;border-bottom:1px solid #ffffff24}
+      .pointer-wordmark{font-size:52px}.pointer-copy h2{font-size:27px}
+      .about-grid,.contact-grid{grid-template-columns:1fr;gap:32px}
+      .about h2{max-width:580px}.values{padding-top:0}
+      .contact h2{font-size:34px}
+      .contact-form-card{padding:24px}
+      .footer-grid{grid-template-columns:1fr 1fr;gap:35px 22px}
+      .footer-brand{grid-column:1/-1}
     }
-
-    .theme-icon { display: none; }
-    :root[data-theme="light"] .theme-icon-light,
-    :root[data-theme="dark"] .theme-icon-dark { display: block; }
-
-    :root[data-theme="light"] .newsletter,
-    :root[data-theme="light"] footer {
-      background: #0F172A;
-      color: #FFFFFF;
-    }
-
-    :root[data-theme="light"] .newsletter h2,
-    :root[data-theme="light"] .footer-brand-title,
-    :root[data-theme="light"] .footer-column a {
-      color: #FFFFFF;
-    }
-
-    :root[data-theme="light"] .newsletter p,
-    :root[data-theme="light"] .privacy-note,
-    :root[data-theme="light"] .footer-brand p,
-    :root[data-theme="light"] .footer-column h3,
-    :root[data-theme="light"] .footer-column .soon-link,
-    :root[data-theme="light"] .footer-column .coming-soon,
-    :root[data-theme="light"] .copyright {
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    :root[data-theme="light"] .copyright {
-      border-color: rgba(255, 255, 255, 0.1);
-    }
-
-    :root[data-theme="light"] .story-card .card-meta,
-    :root[data-theme="light"] .hub-meta-row .card-meta {
-      color: var(--muted);
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; scroll-padding-top: 24px; }
-    body {
-      margin: 0;
-      background: var(--page);
-      color: var(--text);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      transition: background-color .2s ease, color .2s ease;
-    }
-    a { color: inherit; text-decoration: none; }
-    button, input, select, textarea { font: inherit; }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    :focus-visible { outline: 3px solid var(--accent-hover); outline-offset: 3px; }
-    .site-container { width: min(90%, 1312px); margin-inline: auto; }
-    .muted { color: var(--muted); }
-    .utility-bar { border-bottom: 1px solid var(--border); }
-    .utility-inner {
-      min-height: 42px; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-      align-items: center; gap: 16px; font-size: 11px; color: var(--muted);
-    }
-    .utility-left, .production, .location { display: flex; align-items: center; }
-    .utility-left { gap: 16px; white-space: nowrap; }
-    .location { gap: 9px; }
-    .utility-date { text-transform: uppercase; }
-    .utility-divider { height: 14px; border-left: 1px solid var(--border); }
-    .production { justify-content: center; gap: 11px; color: var(--text); font-weight: 700; }
-    .status-dot, .nav-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; }
-    .theme-toggle {
-      justify-self: end; width: 32px; height: 32px; display: grid; place-items: center;
-      border: 1px solid var(--border); border-radius: 50%; background: var(--panel); color: var(--text);
-      cursor: pointer;
-    }
-    .brand-row { min-height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-    .brand-lockup { display: flex; align-items: center; gap: 12px; }
-    .brand-lockup > span:last-child { display: block; }
-    .target-logo {
-      position: relative; width: 42px; height: 42px; border: 7px solid var(--accent);
-      border-radius: 50%; background: var(--text); flex: 0 0 auto;
-    }
-    .target-logo::before {
-      content: ""; position: absolute; inset: 5px; border: 4px solid var(--page); border-radius: 50%;
-    }
-    .target-logo::after {
-      content: ""; position: absolute; width: 7px; height: 7px; inset: 0; margin: auto;
-      border-radius: 50%; background: var(--accent);
-    }
-    .brand-name { display: block; font-size: clamp(30px, 3.2vw, 44px); font-weight: 900; letter-spacing: -.055em; line-height: .96; }
-    .brand-tagline { color: var(--muted); font-size: 10px; margin-top: 8px; }
-    .brand-message { text-align: right; }
-    .brand-message strong { display: block; font-size: 14px; white-space: nowrap; }
-    .brand-message span { display: block; margin-top: 6px; color: var(--muted); font-size: 10px; letter-spacing: .025em; }
-    .nav-row { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 52px; }
-    .nav-links { display: flex; align-items: center; gap: 26px; }
-    .nav-link { position: relative; padding-block: 17px; font-size: 13px; font-weight: 700; }
-    .nav-link.active::after { content: ""; position: absolute; height: 3px; inset-inline: 0; bottom: 0; background: var(--accent); }
-    .header-cta {
-      min-height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-      padding: 0 17px; border-radius: 4px; background: var(--accent); color: #fff;
-      font-size: 11px; font-weight: 700; transition: background-color .2s ease;
-    }
-    .header-cta:hover, .button-red:hover, .pill:hover { background: var(--accent-hover); }
-
-    main { overflow: hidden; }
-    .hero { padding: 44px 0 70px; }
-    .hero-badge, .tag {
-      display: inline-flex; align-items: center; width: fit-content; border-radius: 999px;
-      background: var(--accent); color: #fff; font-size: 9px; font-weight: 800;
-    }
-    .hero-badge { padding: 8px 13px; }
-    .hero h1 {
-      max-width: 825px; margin: 14px 0 12px; font-size: clamp(42px, 6.1vw, 72px);
-      font-weight: 900; letter-spacing: -.02em; line-height: .99;
-    }
-    .hero-intro { max-width: 720px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
-    .hero-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 16px; margin-top: 22px; }
-    .featured-card {
-      position: relative; isolation: isolate; min-height: clamp(356px, 36.1vw, 520px); overflow: hidden; border-radius: 24px;
-      display: flex; flex-direction: column; justify-content: flex-end; padding: 24px;
-      background-color: #0F172A;
-      background-image: linear-gradient(180deg, rgba(7, 11, 18, .04) 18%, rgba(7, 11, 18, .35) 45%, rgba(7, 11, 18, .97) 100%), url("./images/hero-lagos.jpg");
-      background-size: cover; background-position: center;
-    }
-    .feature-play {
-      position: absolute; z-index: 1; left: 50%; top: 44%; transform: translate(-50%, -50%);
-      width: 72px; height: 72px; display: grid; place-items: center; border: 0; border-radius: 50%;
-      background: var(--accent); color: #fff; cursor: pointer; box-shadow: 0 8px 28px var(--shadow);
-    }
-    .feature-content { position: relative; z-index: 1; max-width: 680px; }
-    .dark-tag { display: inline-block; padding: 6px 9px; border-radius: 3px; background: rgba(10, 14, 20, .75); color: #fff; font-size: 9px; font-weight: 800; }
-    .featured-card h2 { margin: 10px 0 8px; color: #FFFFFF; font-size: clamp(25px, 3vw, 36px); letter-spacing: -.01em; line-height: 1.08; font-weight: 800; }
-    .featured-card p { margin: 0; color: rgba(255, 255, 255, 0.75); font-size: 11px; line-height: 1.6; }
-    .featured-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; }
-    .featured-meta { color: rgba(255, 255, 255, 0.75); font-size: 8px; text-transform: uppercase; }
-    .card-meta { color: #9aa8bb; font-size: 8px; text-transform: uppercase; }
-    .button-red, .pill {
-      border: 0; border-radius: 999px; background: var(--accent); color: #fff; font-size: 10px;
-      font-weight: 800; display: inline-flex; align-items: center; justify-content: center; gap: 9px;
-      min-height: 34px; padding: 0 15px; cursor: pointer; transition: background-color .2s ease;
-    }
-    .side-stories { display: grid; grid-template-rows: 1fr 1fr; gap: 16px; }
-    .story-card, .hub-card, .contact-card { background: var(--panel); border: 1px solid var(--border); }
-    .story-card { border-radius: 24px; padding: 24px; display: flex; flex-direction: column; align-items: flex-start; }
-    .tag { padding: 6px 10px; font-size: 8px; }
-    .story-card h3 { margin: 12px 0 8px; font-size: clamp(18px, 2vw, 22px); line-height: 1.12; letter-spacing: -.01em; font-weight: 800; }
-    .story-card p { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
-    .story-card .card-meta { margin-top: auto; padding-top: 12px; }
-    .story-card:first-child .card-meta { margin-bottom: 16px; }
-    .story-bottom { width: 100%; margin-top: auto; padding-top: 16px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-
-    .section { padding: 50px 0 54px; }
-    .section-rule { border-top: 3px solid var(--accent); padding-top: 18px; }
-    .section-label { margin: 0 0 8px; color: var(--accent); font-size: 10px; text-transform: uppercase; font-weight: 800; }
-    .section-heading { margin: 0; font-size: clamp(28px, 3vw, 34px); font-weight: 800; line-height: 1.12; letter-spacing: -.01em; }
-    .section-subtitle { margin: 16px 0 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
-    .hub-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
-    .hub-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
-    .youtube-cta { min-height: 36px; padding-inline: 15px; }
-    .broadcast-meta { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 10px; }
-    .hub-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; margin-top: 28px; }
-    .hub-card { overflow: hidden; border-radius: 24px; }
-    .hub-thumb {
-      position: relative; height: 220px; background-color: #0F172A;
-      background-position: center; background-size: cover;
-    }
-    .hub-thumbnail-link { position: absolute; z-index: 0; inset: 0; display: block; }
-    .hub-thumb .thumb-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .hub-thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 65%, rgba(3, 7, 14, .2)); pointer-events: none; }
-    .hub-play {
-      position: absolute; z-index: 1; inset: 50% auto auto 50%; transform: translate(-50%, -50%);
-      width: 56px; height: 56px; border: 0; border-radius: 50%; background: var(--accent); color: #fff;
-      display: grid; place-items: center; cursor: pointer;
-    }
-    .hub-card-body { padding: 18px; }
-    .hub-meta-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .hub-card h3 { min-height: 52px; margin: 14px 0 12px; font-size: 20px; line-height: 1.25; letter-spacing: -.01em; font-weight: 750; }
-    .hub-card-bottom { margin-top: 12px; }
-
-    .investigate-intro { margin-top: 24px; padding: 27px; border: 1px solid var(--border); border-radius: 24px; background: var(--panel); }
-    .investigate-intro h3 { margin: 0; font-size: clamp(24px, 3vw, 30px); line-height: 1.15; font-weight: 800; letter-spacing: -.01em; }
-    .investigate-intro p { margin: 14px 0 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
-    .investigation-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 26px; }
-    .investigation-tile {
-      min-height: clamp(188px, 15.3vw, 220px); position: relative; display: flex; align-items: flex-end; overflow: hidden;
-      border-radius: 24px; padding: 18px; background-color: #0F172A; background-size: cover; background-position: center;
-    }
-    .investigation-tile::before { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(5, 9, 14, .03) 24%, rgba(5, 9, 14, .86) 100%); }
-    .investigation-tile img { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-    .investigation-tile span { position: relative; z-index: 2; color: #FFFFFF; font-size: 19px; font-weight: 800; letter-spacing: -.01em; }
-    .more-label { margin: 18px 0 0; color: var(--muted); font-size: 11px; font-weight: 700; }
-
-    .corporate-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px; align-items: center; margin-top: 25px; }
-    .corporate-copy { color: var(--muted); font-size: 16px; line-height: 1.65; }
-    .corporate-copy p { margin: 0 0 8px; }
-    .corporate-image {
-      min-height: 260px; border-radius: 24px; background-color: #182232; background-size: cover; background-position: center;
-      background-image: linear-gradient(90deg, rgba(5, 9, 14, .12), rgba(5, 9, 14, .04)), url("/images/corporate-office.png");
-    }
-
-    .contact-intro { max-width: 780px; }
-    .contact-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 22px; margin-top: 26px; }
-    .contact-card { border-radius: 24px; padding: 26px; }
-    .contact-card h3 { margin: 0 0 18px; font-size: 20px; font-weight: 800; }
-    .contact-item { margin: 0 0 20px; color: var(--muted); font-size: 13px; line-height: 1.6; }
-    .contact-item strong { display: block; margin-bottom: 4px; color: var(--text); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
-    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-    .form-field { display: flex; flex-direction: column; gap: 7px; }
-    .form-field.full { grid-column: 1 / -1; }
-    .form-field label { color: var(--muted); font-size: 11px; font-weight: 700; }
-    .form-field input, .form-field select, .form-field textarea {
-      width: 100%; min-height: 43px; border: 1px solid var(--border); border-radius: 10px;
-      padding: 10px 12px; background: var(--page); color: var(--text); font-size: 13px;
-    }
-    .form-field textarea { min-height: 112px; resize: vertical; }
-    .form-field select { color-scheme: inherit; }
-    .form-submit { min-height: 40px; margin-top: 16px; }
-
-    .newsletter { background: var(--panel); }
-    .newsletter-inner { display: grid; grid-template-columns: 1fr 1.08fr; align-items: center; gap: 48px; padding-block: 38px; }
-    .newsletter h2 { margin: 0; font-size: clamp(26px, 3vw, 32px); line-height: 1.15; font-weight: 800; letter-spacing: -.01em; }
-    .newsletter p { margin: 10px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
-    .newsletter-form-row { display: flex; height: 48px; }
-    .newsletter-form input { min-width: 0; flex: 1; border: 1px solid #d5dbe5; border-right: 0; border-radius: 0; padding: 0 15px; background: var(--input); color: var(--input-text); font-size: 13px; }
-    .newsletter-form button { border: 0; padding: 0 20px; background: var(--accent); color: #fff; font-size: 12px; font-weight: 800; cursor: pointer; }
-    .privacy-note { margin-top: 9px; color: var(--muted); font-size: 9px; }
-    footer { background: var(--page); }
-    .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1.15fr .55fr; gap: 36px; padding-block: 42px 32px; }
-    .footer-brand-title { display: flex; align-items: center; gap: 9px; font-size: 30px; font-weight: 800; letter-spacing: -.04em; }
-    .footer-brand-title::before { content: ""; width: 5px; height: 30px; background: var(--accent); }
-    .footer-brand p { max-width: 320px; margin: 14px 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
-    .footer-brand strong { font-size: 9px; }
-    .footer-column h3 { margin: 4px 0 15px; color: var(--muted); font-size: 9px; font-weight: 800; }
-    .footer-column a, .footer-column span { display: block; margin: 0 0 13px; font-size: 11px; }
-    .footer-column .coming-soon { display: inline; margin-left: 7px; color: var(--muted); font-size: 7px; }
-    .footer-column .soon-link { color: var(--muted); }
-    .copyright { border-top: 1px solid var(--border); padding-block: 20px; color: var(--muted); font-size: 10px; }
-    .toast {
-      position: fixed; z-index: 50; right: 24px; bottom: 24px; max-width: calc(100vw - 48px);
-      padding: 13px 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--panel);
-      color: var(--text); box-shadow: 0 12px 32px var(--shadow); font-size: 13px; opacity: 0;
-      transform: translateY(12px); pointer-events: none; transition: opacity .2s ease, transform .2s ease;
-    }
-    .toast.visible { opacity: 1; transform: translateY(0); }
-    .video-modal {
-      position: fixed; z-index: 60; inset: 0; display: none; place-items: center; padding: 24px;
-      background: rgba(2, 5, 10, .9); backdrop-filter: blur(7px);
-    }
-    .video-modal.open { display: grid; }
-    .modal-content { width: min(100%, 980px); position: relative; }
-    .modal-close {
-      position: absolute; right: 0; top: -46px; width: 38px; height: 38px; display: grid; place-items: center;
-      border: 1px solid rgba(255,255,255,.25); border-radius: 50%; background: rgba(255,255,255,.08); color: #fff; cursor: pointer;
-    }
-    .modal-title { margin: 0 48px 12px 0; color: #fff; font-size: 18px; font-weight: 700; }
-    .modal-player { position: relative; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 12px; background: #000; }
-    .modal-player .modal-video, .modal-player .modal-frame { display: block; width: 100%; height: 100%; border: 0; background: #000; object-fit: contain; }
-    .media-fallback { position: absolute; inset: 0; display: grid; place-content: center; gap: 12px; padding: 20px; background: rgba(4, 7, 12, .92); color: #fff; text-align: center; }
-    .media-fallback[hidden] { display: none; }
-    .media-fallback a { justify-self: center; }
-    .media-open-link { display: inline-flex; margin-top: 10px; }
-    .media-open-link[hidden] { display: none; }
-    .empty-episodes { grid-column: 1 / -1; padding: 32px; border: 1px solid var(--border); border-radius: 16px; background: var(--panel); color: var(--muted); text-align: center; }
-    .video-controls { display: flex; align-items: center; gap: 12px; margin-top: 12px; color: #fff; }
-    .control-button, .speed-select { border: 1px solid rgba(255,255,255,.2); border-radius: 8px; background: rgba(255,255,255,.08); color: #fff; padding: 8px 11px; cursor: pointer; font-size: 12px; }
-    .speed-select option { color: #111827; }
-    .seekbar { flex: 1; accent-color: var(--accent); }
-    .video-time { min-width: 76px; color: #cbd5e1; font-size: 11px; text-align: right; }
-    .sr-only {
-      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
-    }
-
-    @media (min-width: 1500px) {
-      .hero-grid { gap: 16px; }
-    }
-    @media (max-width: 850px) {
-      .utility-inner { grid-template-columns: 1fr auto; }
-      .production { display: none; }
-      .hero { padding-top: 38px; }
-      .hero-grid { grid-template-columns: 1fr; }
-      .featured-card { min-height: 420px; }
-      .side-stories { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-      .story-card { min-height: 225px; }
-      .hub-grid { gap: 14px; }
-      .hub-thumb { height: 170px; }
-      .hub-card-body { padding: 14px; }
-      .hub-card h3 { font-size: 17px; }
-      .corporate-grid { grid-template-columns: 1fr  .8fr; gap: 20px; }
-      .corporate-copy { font-size: 14px; }
-      .footer-grid { grid-template-columns: 1.4fr 1fr 1fr; }
-      .footer-column:last-child { grid-column: 2 / 4; }
-    }
-    @media (max-width: 600px) {
-      .utility-inner { min-height: 40px; grid-template-columns: 1fr auto; }
-      .utility-left { gap: 10px; font-size: 9px; }
-      .production { display: none; }
-      .brand-row { min-height: 88px; }
-      .brand-lockup { gap: 9px; }
-      .target-logo { width: 34px; height: 34px; border-width: 6px; }
-      .target-logo::before { inset: 4px; border-width: 3px; }
-      .target-logo::after { width: 6px; height: 6px; }
-      .brand-name { font-size: 27px; }
-      .brand-tagline { max-width: 230px; font-size: 8px; }
-      .brand-message { display: none; }
-      .nav-inner { min-height: auto; align-items: stretch; flex-direction: column; gap: 10px; padding-block: 0 12px; }
-      .nav-links { justify-content: space-between; gap: 12px; }
-      .nav-link { padding-block: 13px 9px; font-size: 11px; }
-      .header-cta { width: 100%; min-height: 38px; }
-      .hero { padding: 34px 0 42px; }
-      .hero-badge { max-width: 100%; font-size: 7px; }
-      .hero h1 { margin-top: 14px; font-size: clamp(39px, 12vw, 54px); }
-      .hero-intro { font-size: 13px; }
-      .featured-card { min-height: 390px; padding: 18px; }
-      .feature-play { width: 62px; height: 62px; top: 40%; }
-      .featured-card h2 { font-size: 27px; }
-      .side-stories { grid-template-columns: 1fr; }
-      .story-card { min-height: 210px; padding: 18px; }
-      .section { padding: 38px 0 42px; }
-      .section-rule { padding-top: 15px; }
-      .section-heading { font-size: 28px; }
-      .hub-head { align-items: flex-start; flex-direction: column; gap: 18px; }
-      .hub-actions { align-items: flex-start; flex-direction: row; flex-wrap: wrap; }
-      .hub-grid { grid-template-columns: 1fr; gap: 16px; margin-top: 20px; }
-      .hub-thumb { height: 210px; }
-      .hub-card h3 { min-height: 0; font-size: 19px; }
-      .investigate-intro { padding: 21px; }
-      .investigation-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
-      .investigation-tile { min-height: 145px; padding: 13px; border-radius: 15px; }
-      .investigation-tile span { font-size: 15px; }
-      .corporate-grid, .contact-grid { grid-template-columns: 1fr; }
-      .corporate-grid { gap: 18px; }
-      .corporate-image { order: -1; min-height: 215px; }
-      .corporate-copy { font-size: 14px; }
-      .contact-card { padding: 20px; }
-      .form-grid { grid-template-columns: 1fr; }
-      .form-field.full { grid-column: auto; }
-      .newsletter-inner { grid-template-columns: 1fr; gap: 20px; padding-block: 30px; }
-      .newsletter h2 { font-size: 27px; }
-      .newsletter-form-row { height: 46px; }
-      .newsletter-form button { padding-inline: 13px; font-size: 11px; }
-      .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 18px; padding-block: 32px 24px; }
-      .footer-brand { grid-column: 1 / -1; }
-      .footer-column:last-child { grid-column: auto; }
-      .footer-brand-title { font-size: 27px; }
-      .video-modal { padding: 14px; }
-      .video-controls { gap: 7px; }
-      .control-button, .speed-select { padding: 7px; }
-      .video-time { display: none; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    @media(max-width:480px){
+      .wrap{width:calc(100% - 32px)}
+      .utility-left .location-item{display:none}.utility-right{gap:10px}
+      .utility-item a{font-size:8px}.utility-date{font-size:8px}
+      .brand-name{font-size:15px}.brand-sub{font-size:7px}.company-brand{gap:10px}
+      .hero-main{padding-top:47px}.hero h1{font-size:39px}
+      .hero-actions{flex-direction:column;align-items:stretch}.hero-actions .button{width:100%}
+      .hero-card-art{height:235px}.hero-card-art img{height:205px}
+      .hero-card-copy{padding:19px}.hero-card-copy h2{font-size:19px}
+      .stats-line{grid-template-columns:.55fr 1.1fr 1fr}.stat{padding-inline:10px}.stat strong{font-size:22px}.stat span{font-size:7px;letter-spacing:.08em}
+      .ribbon-item{font-size:9px}
+      .service-grid{grid-template-columns:1fr;gap:14px}
+      .service-card{min-height:310px;padding:23px}
+      .pointer-card{padding:25px 22px}.pointer-wordmark{font-size:46px}
+      .pointer-motto{font-size:7px}
+      .section-head h2,.about h2{font-size:33px}
+      .contact h2{font-size:31px}
+      .form-grid{grid-template-columns:1fr;gap:14px}.field.full{grid-column:auto}
+      .form-bottom{align-items:flex-start;flex-direction:column}
+      .footer-grid{grid-template-columns:1fr 1fr}
+      .footer-brand-lockup strong{font-size:17px}
+      .copyright{flex-direction:column;font-size:9px}
     }
   </style>
 </head>
-<body id="top">
-  <header>
-    <div class="utility-bar">
-      <div class="site-container utility-inner">
-        <div class="utility-left">
-          <span class="utility-date" id="current-date">FRIDAY, 23 OCTOBER 2026</span>
-          <span class="utility-divider" aria-hidden="true"></span>
-          <span class="location">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v2m0 14v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M3 12h2m14 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-            <span id="location-text">Lagos, NG</span>
-          </span>
-        </div>
-        <div class="production"><span class="status-dot" aria-hidden="true"></span><span>A Delbuster Global Media Production</span></div>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Toggle theme">
-          <svg class="theme-icon theme-icon-light" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          <svg class="theme-icon theme-icon-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.7" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
+<body>
+  <div class="utility">
+    <div class="wrap utility-inner">
+      <div class="utility-group">
+        <span class="utility-item utility-date"><span class="blue-dot" aria-hidden="true"></span><span id="today-date"></span></span>
+        <span class="utility-item location-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span id="location-text">Lagos, NG</span></span>
       </div>
-    </div>
-    <div class="site-container brand-row">
-      <a class="brand-lockup" href="#top" aria-label="The Pointer home">
-        <span class="target-logo" aria-hidden="true"></span>
-        <span>
-          <span class="brand-name">THE POINTER</span>
-          <span class="brand-tagline">Independent investigative news, politics, and lifestyle</span>
-        </span>
-      </a>
-      <div class="brand-message">
-        <strong>Nigeria in focus. The world in view.</strong>
-        <span>INDEPENDENT PERSPECTIVE&nbsp; / &nbsp;GLOBAL REACH</span>
-      </div>
-    </div>
-    <nav class="nav-row" aria-label="Main navigation">
-      <div class="site-container nav-inner">
-        <div class="nav-links">
-          <a class="nav-link active" href="#top">Home</a>
-          <a class="nav-link" href="#watch-full-episodes">Watch Full Episodes</a>
-          <a class="nav-link" href="#corporate-overview">About Delbuster</a>
-        </div>
-        <a class="header-cta" href="https://youtube.com/@thepointer" target="_blank" rel="noopener">
-          <span class="nav-dot" aria-hidden="true" style="width:6px;height:6px;background:#fff"></span>
-          <span>Catch Us on DStv (Global TV) &amp; YouTube</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero site-container" aria-labelledby="hero-title">
-      <span class="hero-badge">INDEPENDENT. UNBIASED. THE SOURCE GIST NEWS CHANNELS WON'T TELL YOU.</span>
-      <h1 id="hero-title">Hard-hitting investigations. Unfiltered commentary. The stories that shape Nigeria.</h1>
-      <p class="hero-intro">From the economy and governance to culture and enterprise, The Pointer cuts through the noise with sharp reporting and bold perspectives.</p>
-      <div class="hero-grid">
-        <article class="featured-card">
-          <button class="feature-play js-play-video" type="button" data-video-id="latest" aria-label="Play latest episode">
-            <svg width="22" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m8 5 12 7-12 7V5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          </button>
-          <div class="feature-content">
-            <span class="dark-tag">FEATURED EPISODE</span>
-            <h2>Watch Latest Episode: <span id="featured-title">Exposing the Reality</span></h2>
-            <p>A closer look at the investigations, interviews and commentary shaping the national conversation.</p>
-            <div class="featured-bottom">
-              <button class="button-red js-play-video" type="button" data-video-id="latest">Watch Latest Episode <span aria-hidden="true">↗</span></button>
-              <span class="featured-meta">THE POINTER&nbsp; / &nbsp;26 MIN</span>
-            </div>
-          </div>
-        </article>
-        <div class="side-stories">
-          <article class="story-card">
-            <span class="tag">INVESTIGATIVE STORY</span>
-            <h3>The leaders shaping Nigeria's next chapter</h3>
-            <p>From polling units in Lagos to grassroots campaigns nationwide, a closer look at the key candidates turning political promises into potential governance.</p>
-            <div class="card-meta">POLITICS&nbsp; / &nbsp;INVESTIGATION</div>
-            <a class="pill" href="https://youtube.com/@thepointer" target="_blank" rel="noopener">Watch Episode <span aria-hidden="true">↗</span></a>
-          </article>
-          <article class="story-card">
-            <span class="tag">INTERVIEW</span>
-            <h3>The road to a more connected Nigerian economy</h3>
-            <p>The ideas, decisions and voices behind the day's big conversations.</p>
-            <div class="story-bottom">
-              <span class="card-meta">THE EVENING EDITION&nbsp; / &nbsp;26:40</span>
-              <a class="pill" href="https://youtube.com/@thepointer" target="_blank" rel="noopener">Watch Episode <span aria-hidden="true">→</span></a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section site-container" id="watch-full-episodes" aria-labelledby="hub-heading">
-      <div class="section-rule">
-        <div class="hub-head">
-          <div>
-            <p class="section-label">CATCH UP. STAY CONNECTED.</p>
-            <h2 class="section-heading" id="hub-heading">The Pointer Video Hub</h2>
-            <p class="section-subtitle">Missed the broadcast? Watch the stories, interviews and perspectives that matter.</p>
-          </div>
-          <div class="hub-actions">
-            <a class="pill youtube-cta" href="https://youtube.com/@thepointer" target="_blank" rel="noopener">Watch on YouTube <span aria-hidden="true">↗</span></a>
-            <span class="broadcast-meta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.7"/><path d="m9 2 3 3 3-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg> GLOBAL TV / DStv</span>
-          </div>
-        </div>
-        <div class="hub-grid" id="video-grid"></div>
-      </div>
-    </section>
-
-    <section class="section site-container" aria-labelledby="investigate-heading">
-      <div class="section-rule">
-        <p class="section-label">OUR COVERAGE FOCUS</p>
-        <h2 class="section-heading" id="investigate-heading">What We Investigate</h2>
-        <div class="investigate-intro">
-          <h3>We tell you the truth hidden by majority.</h3>
-          <p>The Pointer investigates the stories that shape Nigeria and the world, with a focus on accountability, evidence and unfiltered commentary.</p>
-        </div>
-        <div class="investigation-grid" id="investigation-grid"></div>
-        <p class="more-label">...and many more</p>
-      </div>
-    </section>
-
-    <section class="section site-container" id="corporate-overview" aria-labelledby="corporate-heading">
-      <div class="section-rule">
-        <p class="section-label">CORPORATE OVERVIEW</p>
-        <h2 class="section-heading" id="corporate-heading">Delbuster Enterprise: Driving Value Across Sectors</h2>
-        <div class="corporate-grid">
-          <div class="corporate-copy">
-            <p>Delbuster Enterprise is a diversified, multi-sector conglomerate built on the principles of strategic opportunity, operational resilience, and long-term economic value creation. Headquartered in Nigeria, our portfolio spans high-impact industries designed to foster sustainable growth, facilitate cross-border trade, and build enduring enterprise value across emerging markets.</p>
-            <p>The Pointer serves as the flagship media asset of Delbuster Enterprise. As an independent, investigative media powerhouse, The Pointer is dedicated to delivering uncompromising journalism, evidence-based reporting, and sharp, unfiltered commentary on the critical political, economic, and social forces shaping Nigeria and the global landscape.</p>
-            <p>By bridging commercial excellence with public-interest journalism, Delbuster Enterprise continues to pioneer solutions, empower decision-makers, and elevate accountability across every market we touch.</p>
-          </div>
-          <div class="corporate-image" role="img" aria-label="Corporate meeting at Delbuster Global headquarters"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section site-container" id="get-in-touch" aria-labelledby="contact-heading">
-      <div class="section-rule">
-        <p class="section-label">WORK WITH US / REACH OUT</p>
-        <h2 class="section-heading" id="contact-heading">Get in Touch with Delbuster Enterprise</h2>
-        <p class="section-subtitle contact-intro">Have a question, a story to share, or an opportunity to explore? Get in touch with our team.</p>
-        <div class="contact-grid">
-          <article class="contact-card">
-            <h3>Let's connect</h3>
-            <p class="contact-item"><strong>Email</strong><a href="mailto:delbusterglobal@gmail.com">delbusterglobal@gmail.com</a></p>
-            <p class="contact-item"><strong>Office</strong>No. 2 cross river street, Gariki, Abuja</p>
-            <a class="pill" href="https://wa.me/2340000000000" target="_blank" rel="noopener">Chat with us on WhatsApp <span aria-hidden="true">↗</span></a>
-          </article>
-          <article class="contact-card">
-            <h3>Send us a message</h3>
-            <form id="contact-form">
-              <div class="form-grid">
-                <div class="form-field">
-                  <label for="contact-name">Full Name</label>
-                  <input id="contact-name" name="name" autocomplete="name" required>
-                </div>
-                <div class="form-field">
-                  <label for="contact-email">Email Address</label>
-                  <input id="contact-email" name="email" type="email" autocomplete="email" required>
-                </div>
-                <div class="form-field full">
-                  <label for="contact-subject">Subject</label>
-                  <select id="contact-subject" name="subject" required>
-                    <option value="" selected disabled>Select a subject</option>
-                    <option>General Inquiry</option>
-                    <option>Story Lead/Tip</option>
-                    <option>Media &amp; Advertising</option>
-                    <option>Enterprise Partnership</option>
-                  </select>
-                </div>
-                <div class="form-field full">
-                  <label for="contact-message">Message</label>
-                  <textarea id="contact-message" name="message" required></textarea>
-                </div>
-              </div>
-              <button class="pill form-submit" type="submit">Send Message / Schedule Meeting <span aria-hidden="true">↗</span></button>
-            </form>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="newsletter" aria-labelledby="newsletter-heading">
-      <div class="site-container newsletter-inner">
-        <div>
-          <p class="section-label">THE POINTER BRIEFING</p>
-          <h2 id="newsletter-heading">A sharper perspective. In your inbox.</h2>
-          <p>The stories that matter, from Nigeria to the world. Sign up for our newsletter.</p>
-        </div>
-        <form class="newsletter-form" id="newsletter-form">
-          <div class="newsletter-form-row">
-            <label class="sr-only" for="newsletter-email">Your email address</label>
-            <input id="newsletter-email" name="email" type="email" placeholder="Your email address" autocomplete="email" required>
-            <button type="submit">Subscribe <span aria-hidden="true">→</span></button>
-          </div>
-          <div class="privacy-note">By subscribing, you agree to our Privacy Policy. Unsubscribe at any time.</div>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="site-container footer-grid">
-      <div class="footer-brand">
-        <div class="footer-brand-title">Delbuster Global</div>
-        <p>Connecting people, ideas and opportunity. The Pointer is the flagship news and media brand of Delbuster.</p>
-        <strong>ONE GROUP. A WORLD OF POSSIBILITY.</strong>
-      </div>
-      <div class="footer-column">
-        <h3>THE POINTER</h3>
-        <a href="#corporate-overview">About us</a>
-        <a href="#get-in-touch">Our journalism</a>
-        <a href="#get-in-touch">Advertise with us</a>
-        <a href="#get-in-touch">Contact the newsroom</a>
-      </div>
-      <div class="footer-column">
-        <h3>THE DELBUSTER GROUP</h3>
-        <a href="#corporate-overview">News &amp; Media</a>
-        <span class="soon-link">Trade &amp; Commerce <span class="coming-soon">COMING SOON</span></span>
-        <span class="soon-link">Logistics &amp; Distribution <span class="coming-soon">COMING SOON</span></span>
-        <span class="soon-link">Enterprise Services <span class="coming-soon">COMING SOON</span></span>
-      </div>
-      <div class="footer-column">
-        <h3>FOLLOW THE POINTER</h3>
-        <a href="https://www.instagram.com/reel/DeHTJZEgYVi/?utm_source=ig_web_copy_link&amp;rpxt=NTc4MTIwNjQ2YQ==" target="_blank" rel="noopener">Instagram ↗</a>
-        <a href="https://youtube.com/@thepointer" target="_blank" rel="noopener">YouTube ↗</a>
-        <a href="https://facebook.com" target="_blank" rel="noopener">Facebook ↗</a>
-      </div>
-    </div>
-    <div class="site-container copyright">© 2026 Delbuster. The Pointer. All rights reserved.</div>
-  </footer>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <div class="video-modal" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="modal-content">
-      <button class="modal-close" id="modal-close" type="button" aria-label="Close video">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </button>
-      <h2 class="modal-title" id="modal-title">Watch video</h2>
-      <div class="modal-player" id="modal-player">
-        <div class="media-fallback" id="media-fallback" hidden>
-          <strong>This video can't be played here</strong>
-          <a class="pill" id="fallback-open-link" href="#" target="_blank" rel="noopener">Open video in new tab</a>
-        </div>
-      </div>
-      <a class="pill media-open-link" id="open-video-link" href="#" target="_blank" rel="noopener" hidden>Open video in new tab ↗</a>
-      <div class="video-controls" id="video-controls">
-        <button class="control-button" id="video-play" type="button" aria-label="Play video">Play</button>
-        <input class="seekbar" id="video-seek" type="range" min="0" max="100" value="0" aria-label="Seek video">
-        <span class="video-time" id="video-time">0:00 / 0:00</span>
-        <label class="sr-only" for="video-speed">Playback speed</label>
-        <select class="speed-select" id="video-speed" aria-label="Playback speed">
-          <option value="0.5">0.5x</option>
-          <option value="1" selected>1.0x</option>
-          <option value="1.5">1.5x</option>
-          <option value="2">2.0x</option>
-        </select>
-        <button class="control-button" id="video-fullscreen" type="button">Fullscreen</button>
+      <div class="utility-right">
+        <span class="utility-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><a data-company-email href="mailto:delbusterglobal@gmail.com">delbusterglobal@gmail.com</a></span>
+        <span class="utility-item" id="utility-phone" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-3 2a15 15 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2C9 21 3 15 3 6a2 2 0 0 1 2-2Z"/></svg><a data-company-phone-link href=""></a></span>
       </div>
     </div>
   </div>
 
-  <script src="/js/media.js"></script>
-  <script src="/js/site.js"></script>
+  <header class="nav" id="site-nav">
+    <div class="wrap nav-inner">
+      <a class="company-brand" href="/" aria-label="Delbuster Resource Limited home">
+        <img src="/images/delbuster-logo.png" alt="">
+        <span><span class="brand-name">DELBUSTER</span><span class="brand-sub">RESOURCE LIMITED</span></span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="Main navigation">
+        <a class="nav-link active" href="#home">Home</a>
+        <a class="nav-link" href="#services">Services</a>
+        <a class="nav-link" href="#about">About</a>
+        <a class="nav-link" href="/pointer">The Pointer Media Hub</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </nav>
+      <a class="button nav-cta" href="#contact">Partner With Us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+      <button class="menu-button" id="menu-button" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="wrap hero-main">
+        <div>
+          <div class="eyebrow">VERSATILE BY NATURE. TRUSTED BY PRINCIPLE.</div>
+          <h1>Dynamic Enterprise, Global Consultancy &amp; Trusted General Merchandise</h1>
+          <p class="hero-copy">Flexibility in every opportunity. Integrity in every relationship. We deliver affordable excellence across media consultancy, conferences, general merchandise and import-export.</p>
+          <div class="chips">
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg>Flexible Thinking</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg>Uncompromised Integrity</span>
+            <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg>Affordable Excellence</span>
+          </div>
+          <div class="hero-actions">
+            <a class="button" href="#services">Explore Our Services <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+            <a class="button button-outline" href="#contact">Let's Talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+          </div>
+        </div>
+        <article class="hero-card">
+          <div class="hero-card-art">
+            <img src="/images/delbuster-logo.png" alt="Delbuster Resource Limited blue diamond">
+            <span class="perspective">A GLOBAL PERSPECTIVE</span>
+          </div>
+          <div class="hero-card-copy">
+            <div class="short-rule"></div>
+            <h2>Built for opportunity.<br>Grounded in trust.</h2>
+            <p>CONSULTANCY · COMMERCE · CONNECTION</p>
+            <div class="stats-line">
+              <div class="stat"><strong>4</strong><span>SERVICE AREAS</span></div>
+              <div class="stat"><strong>1</strong><span>MEDIA SUBSIDIARY</span></div>
+              <div class="stat"><strong>NG</strong><span>HEADQUARTERED</span></div>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="hero-ribbon"><div class="wrap ribbon-inner">
+        <span class="ribbon-title">ONE COMPANY. MANY POSSIBILITIES.</span>
+        <span class="ribbon-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg>Flexible thinking</span>
+        <span class="ribbon-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg>Uncompromised integrity</span>
+        <span class="ribbon-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 12 4 4L19 6"/></svg>Affordable excellence</span>
+      </div></div>
+    </section>
+
+    <section class="section services" id="services">
+      <div class="wrap">
+        <div class="section-head">
+          <div><div class="eyebrow">OUR EXPERTISE</div><h2>What We Do</h2></div>
+          <p class="section-intro">Diverse capabilities. One dependable partner. Practical solutions shaped around your ambitions.</p>
+        </div>
+        <div class="service-grid">
+          <article class="service-card" data-service="Media Consultancy &amp; Training" tabindex="0" role="button" aria-label="Inquire about Media Consultancy and Training">
+            <span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="2.5"/><path d="M5.5 8.5a5 5 0 0 0 0 7m13-7a5 5 0 0 1 0 7M3 6a9 9 0 0 0 0 12m18-12a9 9 0 0 1 0 12"/></svg></span>
+            <h3>Media Consultancy &amp; Training</h3><p>Strategic communication, media advisory and practical training that build capability and strengthen your voice.</p>
+            <span class="service-link">Strategy &amp; capacity building <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+          </article>
+          <article class="service-card" data-service="Conference &amp; Event Organization" tabindex="0" role="button" aria-label="Inquire about Conference and Event Organization">
+            <span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M8 3v4m8-4v4M4 10h16M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"/></svg></span>
+            <h3>Conference &amp; Event Organization</h3><p>Thoughtfully planned conferences and events that bring people together and turn ideas into meaningful connections.</p>
+            <span class="service-link">Planning &amp; coordination <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+          </article>
+          <article class="service-card" data-service="General Merchandise &amp; Contracts" tabindex="0" role="button" aria-label="Inquire about General Merchandise and Contracts">
+            <span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9m-4-16 9 5"/></svg></span>
+            <h3>General Merchandise &amp; Contracts</h3><p>Dependable sourcing, procurement and contract delivery, with quality and value at the heart of every engagement.</p>
+            <span class="service-link">Sourcing &amp; delivery <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+          </article>
+          <article class="service-card" data-service="Import &amp; Export Services" tabindex="0" role="button" aria-label="Inquire about Import and Export Services">
+            <span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18m0-18a14 14 0 0 0 0 18M5 7h14m-14 10h14"/></svg></span>
+            <h3>Import &amp; Export Services</h3><p>Connecting local needs with global opportunities through responsive international sourcing and trade support.</p>
+            <span class="service-link">Trade &amp; global connections <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="pointer-feature" aria-label="The Pointer Media Hub">
+      <div class="wrap pointer-card">
+        <div class="pointer-brand">
+          <div class="subsidiary"><span class="logo-box"><img src="/images/delbuster-logo.png" alt=""></span><span>A DELBUSTER RESOURCE LIMITED SUBSIDIARY</span></div>
+          <div class="pointer-rule"></div><div class="pointer-wordmark">The Pointer</div>
+          <div class="pointer-motto"><span>INDEPENDENT THINKING</span><span>MEANINGFUL PERSPECTIVE</span></div>
+        </div>
+        <div class="pointer-copy">
+          <div class="eyebrow">THE POINTER MEDIA HUB</div>
+          <h2>Beyond the headlines. Closer to the truth.</h2>
+          <p>Our premier media arm brings investigative journalism and incisive commentary to the stories that matter most — told with clarity, courage and independence.</p>
+          <div class="chips"><span class="chip">Investigative Journalism</span><span class="chip">Incisive Commentary</span></div>
+          <a class="button button-white" href="/pointer">Explore The Pointer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section about" id="about">
+      <div class="wrap about-grid">
+        <div class="about-copy">
+          <div class="eyebrow">ABOUT DELBUSTER</div>
+          <h2>Flexible in approach. Firm in our values.</h2>
+          <p>Delbuster Resource Limited is a dynamic enterprise built to respond to a world of possibilities. From consultancy and media to merchandise and international trade, we bring clarity, care and commitment to every engagement.</p>
+          <strong>Our business is diverse. Our commitment to doing it right is constant.</strong>
+          <img class="about-logo" src="/images/delbuster-logo.png" alt="Delbuster Resource Limited blue diamond">
+        </div>
+        <div class="values">
+          <article class="value-row"><span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m16 3 5 5-5 5M4 8h9a4 4 0 0 1 4 4v1m-9 8-5-5 5-5m16 5h-9a4 4 0 0 1-4-4v-1"/></svg></span><div><h3>Dynamic flexibility</h3><p>We adapt to changing needs, bringing the right capabilities to each opportunity.</p></div></article>
+          <article class="value-row"><span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg></span><div><h3>Uncompromised integrity</h3><p>Honest communication and responsible decisions guide how we do business.</p></div></article>
+          <article class="value-row"><span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 2.5 8 12 21l9.5-13L12 3Z"/><path d="m2.5 8 9.5 13 9.5-13M8 8l4-5 4 5-4 13L8 8Z"/></svg></span><div><h3>Affordable excellence</h3><p>Thoughtful solutions and dependable quality, without unnecessary complexity.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact" id="contact">
+      <div class="wrap contact-grid">
+        <div>
+          <div class="eyebrow">LET'S WORK TOGETHER</div>
+          <h2>Your next opportunity starts with a conversation.</h2>
+          <p class="contact-intro">Tell us what you have in mind. Let's explore how Delbuster Resource Limited can help move your business forward.</p>
+          <div class="contact-details">
+            <div class="contact-item"><span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></span><div><small>OUR OFFICE</small><strong>2 Cross River Street, Gariki, Abuja</strong><span class="secondary">Federal Capital Territory, Nigeria</span></div></div>
+            <div class="contact-item"><span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><div><small>EMAIL</small><a data-company-email href="mailto:delbusterglobal@gmail.com">delbusterglobal@gmail.com</a></div></div>
+            <div class="contact-item" id="contact-phone" hidden><span class="icon-tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-3 2a15 15 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2C9 21 3 15 3 6a2 2 0 0 1 2-2Z"/></svg></span><div><small>PHONE</small><a data-company-phone-link href=""></a></div></div>
+          </div>
+        </div>
+        <div class="contact-form-card">
+          <h3>How can we help?</h3><p class="form-note">Share a few details about your inquiry. * Required fields</p>
+          <form id="inquiry-form" novalidate>
+            <div class="honeypot" aria-hidden="true"><label for="inquiry-website">Leave this field empty</label><input id="inquiry-website" name="website" tabindex="-1" autocomplete="off"></div>
+            <div class="form-grid">
+              <div class="field"><label for="full-name">Full name *</label><input id="full-name" name="fullName" autocomplete="name" placeholder="Your full name" required maxlength="120"><div class="field-error" data-error="fullName"></div></div>
+              <div class="field"><label for="email">Email address *</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required maxlength="254"><div class="field-error" data-error="email"></div></div>
+              <div class="field"><label for="organization">Organization</label><input id="organization" name="organization" autocomplete="organization" placeholder="Company or organization" maxlength="160"><div class="field-error" data-error="organization"></div></div>
+              <div class="field"><label for="phone">Phone number</label><input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="Your phone number" maxlength="40"><div class="field-error" data-error="phone"></div></div>
+              <div class="field full"><label for="area-of-interest">Area of interest *</label><select id="area-of-interest" name="areaOfInterest" required><option value="" selected disabled>Select a service</option><option>Media Consultancy &amp; Training</option><option>Conference &amp; Event Organization</option><option>General Merchandise &amp; Contracts</option><option>Import &amp; Export Services</option><option>Partnership with The Pointer</option><option>Other</option></select><div class="field-error" data-error="areaOfInterest"></div></div>
+              <div class="field full"><label for="inquiry-message">Your message *</label><textarea id="inquiry-message" name="message" placeholder="Tell us about your needs or project…" required maxlength="5000"></textarea><div class="field-error" data-error="message"></div></div>
+            </div>
+            <label class="consent"><input name="consent" type="checkbox" required><span>I agree to be contacted by Delbuster Resource Limited about this inquiry.</span></label>
+            <div class="field-error" data-error="consent"></div>
+            <div class="form-bottom"><button class="button" id="inquiry-submit" type="submit">Send Inquiry <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg></button><span class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Your details stay private.</span></div>
+            <div class="form-feedback" id="form-feedback" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="footer-brand-lockup"><img src="/images/delbuster-logo.png" alt=""><span><strong>DELBUSTER</strong><small>RESOURCE LIMITED</small></span></a>
+          <p>Dynamic enterprise. Dependable partnerships. Affordable excellence, without compromise.</p>
+        </div>
+        <div class="footer-column"><h3>EXPLORE</h3><a href="#home">Home</a><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></div>
+        <div class="footer-column"><h3>OUR MEDIA ARM</h3><a href="/pointer">The Pointer Media Hub&nbsp; ↗</a><div class="location-copy">Gariki, Abuja · Nigeria</div></div>
+      </div>
+      <div class="copyright"><span>© 2026 Delbuster Resource Limited. All rights reserved.</span><strong>FLEXIBILITY. INTEGRITY. EXCELLENCE.</strong></div>
+    </div>
+  </footer>
+
   <script>
     (() => {
-      const videoGrid = document.getElementById("video-grid");
-      const episodesById = new Map();
-      let episodesLoaded = false;
+      const emailElements = document.querySelectorAll("[data-company-email]");
+      const phoneLinks = document.querySelectorAll("[data-company-phone-link]");
+      const nav = document.getElementById("site-nav");
+      const menuButton = document.getElementById("menu-button");
+      const inquiryForm = document.getElementById("inquiry-form");
+      const feedback = document.getElementById("form-feedback");
+      const submitButton = document.getElementById("inquiry-submit");
+      const areaSelect = document.getElementById("area-of-interest");
+      const cleanPhone = (value) => String(value || "").trim();
+      const phoneDigits = (value) => cleanPhone(value).replace(/\D/g, "");
+      const normalizedWhatsApp = (value) => {
+        const digits = phoneDigits(value);
+        return digits ? `https://wa.me/${digits}` : "";
+      };
 
-      function createExternalLink(className, url, label, content) {
-        const link = document.createElement("a");
-        link.className = className.replace(/\bjs-play-video\b/g, "").trim();
-        link.setAttribute("href", url);
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        if (label) link.setAttribute("aria-label", label);
-        while (content.firstChild) link.append(content.firstChild);
-        return link;
+      document.getElementById("today-date").textContent = new Intl.DateTimeFormat("en-GB", {
+        weekday: "long", day: "2-digit", month: "long", year: "numeric"
+      }).format(new Date()).toUpperCase();
+
+      fetch("https://ipapi.co/json/").then((response) => {
+        if (!response.ok) throw new Error(`Location lookup failed (${response.status}).`);
+        return response.json();
+      }).then((location) => {
+        if (location.city && location.country_code) document.getElementById("location-text").textContent = `${location.city}, ${location.country_code}`;
+      }).catch((error) => console.warn("Using the default location because location lookup failed.", error));
+
+      fetch("/api/settings").then((response) => {
+        if (!response.ok) throw new Error(`Settings request failed (${response.status}).`);
+        return response.json();
+      }).then((settings) => {
+        const email = typeof settings.companyEmail === "string" && settings.companyEmail.trim()
+          ? settings.companyEmail.trim() : "delbusterglobal@gmail.com";
+        emailElements.forEach((element) => { element.textContent = email; element.href = `mailto:${email}`; });
+
+        const phone = cleanPhone(settings.companyPhone);
+        const digits = phoneDigits(phone);
+        if (digits) {
+          phoneLinks.forEach((element) => { element.textContent = phone; element.href = `tel:${digits}`; });
+          document.getElementById("utility-phone").hidden = false;
+          document.getElementById("contact-phone").hidden = false;
+          document.getElementById("company-phone-row")?.removeAttribute("hidden");
+        }
+
+        const whatsApp = typeof settings.whatsappUrl === "string" ? settings.whatsappUrl.trim() : "";
+        const whatsAppHref = /^https?:\/\//i.test(whatsApp) ? whatsApp : normalizedWhatsApp(whatsApp);
+        if (whatsAppHref) {
+          const button = document.getElementById("company-whatsapp");
+          button.href = whatsAppHref;
+          button.hidden = false;
+        }
+      }).catch((error) => console.error("Could not load company contact settings:", error));
+
+      menuButton.addEventListener("click", () => {
+        const open = nav.classList.toggle("nav-open");
+        menuButton.setAttribute("aria-expanded", String(open));
+        menuButton.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+      });
+      nav.querySelectorAll(".nav-links a").forEach((link) => link.addEventListener("click", () => {
+        nav.classList.remove("nav-open");
+        menuButton.setAttribute("aria-expanded", "false");
+      }));
+
+      const sectionLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+      const sections = sectionLinks.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+      if ("IntersectionObserver" in window) {
+        const observer = new IntersectionObserver((entries) => {
+          const current = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!current) return;
+          sectionLinks.forEach((link) => link.classList.toggle("active", link.hash === `#${current.target.id}`));
+        }, { rootMargin: "-25% 0px -65% 0px", threshold: [0, .1, .4] });
+        sections.forEach((section) => observer.observe(section));
       }
 
-      function validVideoUrl(value) {
-        if (typeof value !== "string" || !value) return false;
+      const serviceCards = [...document.querySelectorAll(".service-card")];
+      const selectService = (card) => {
+        const service = card.dataset.service.replace(/&amp;/g, "&");
+        const option = [...areaSelect.options].find((item) => item.textContent === service);
+        if (option) areaSelect.value = option.value;
+        location.hash = "contact";
+      };
+      serviceCards.forEach((card) => {
+        card.addEventListener("click", () => selectService(card));
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") { event.preventDefault(); selectService(card); }
+        });
+      });
+
+      const fields = ["fullName", "email", "organization", "phone", "areaOfInterest", "message", "consent"];
+      const clearErrors = () => fields.forEach((field) => {
+        const error = inquiryForm.querySelector(`[data-error="${field}"]`);
+        if (error) error.textContent = "";
+      });
+      inquiryForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        clearErrors();
+        feedback.textContent = "";
+        feedback.className = "form-feedback";
+        const data = Object.fromEntries(new FormData(inquiryForm));
+        data.consent = inquiryForm.elements.consent.checked;
+        const errors = {};
+        if (!data.fullName.trim()) errors.fullName = "Enter your full name.";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) errors.email = "Enter a valid email address.";
+        if (data.organization.length > 160) errors.organization = "Use 160 characters or fewer.";
+        if (data.phone.length > 40) errors.phone = "Use 40 characters or fewer.";
+        if (!data.areaOfInterest) errors.areaOfInterest = "Choose an area of interest.";
+        if (!data.message.trim()) errors.message = "Enter a message.";
+        if (data.message.length > 5000) errors.message = "Use 5,000 characters or fewer.";
+        if (!data.consent) errors.consent = "Please agree to be contacted.";
+        if (Object.keys(errors).length) {
+          Object.entries(errors).forEach(([field, message]) => { inquiryForm.querySelector(`[data-error="${field}"]`).textContent = message; });
+          const firstInvalid = inquiryForm.querySelector(`[data-error="${Object.keys(errors)[0]}"]`).previousElementSibling;
+          firstInvalid?.focus?.();
+          return;
+        }
+        submitButton.disabled = true;
+        submitButton.dataset.label = submitButton.textContent.trim();
+        submitButton.textContent = "Sending…";
         try {
-          const protocol = new URL(value).protocol;
-          return protocol === "http:" || protocol === "https:";
-        } catch {
-          return false;
-        }
-      }
-
-      function updateHubCards() {
-        if (!episodesLoaded) return;
-        videoGrid.querySelectorAll(".hub-card").forEach((card) => {
-          if (card.dataset.externalLinksReady === "true") return;
-          const playButton = card.querySelector(".hub-play");
-          const watchButton = card.querySelector(".hub-card-bottom .js-play-video");
-          if (!playButton || !watchButton) return;
-
-          const episodeId = playButton.dataset.episodeId || watchButton.dataset.episodeId;
-          const episode = episodesById.get(String(episodeId));
-          const videoUrl = episode && episode.videoUrl;
-          card.dataset.externalLinksReady = "true";
-
-          if (!validVideoUrl(videoUrl)) {
-            [playButton, watchButton].forEach((button) => {
-              button.disabled = true;
-              button.classList.remove("js-play-video");
-            });
-            watchButton.textContent = "Link unavailable";
-            return;
-          }
-
-          const thumbnail = card.querySelector(".hub-thumb");
-          const image = thumbnail.querySelector(".thumb-image");
-          const thumbnailLink = document.createElement("a");
-          thumbnailLink.className = "hub-thumbnail-link";
-          thumbnailLink.setAttribute("href", videoUrl);
-          thumbnailLink.target = "_blank";
-          thumbnailLink.rel = "noopener noreferrer";
-          if (image) {
-            thumbnail.insertBefore(thumbnailLink, image);
-            thumbnailLink.append(image);
-          } else {
-            thumbnail.append(thumbnailLink);
-          }
-
-          playButton.replaceWith(createExternalLink(
-            playButton.className,
-            videoUrl,
-            playButton.getAttribute("aria-label"),
-            playButton
-          ));
-          watchButton.replaceWith(createExternalLink(
-            watchButton.className,
-            videoUrl,
-            "",
-            watchButton
-          ));
-        });
-      }
-
-      videoGrid.addEventListener("click", (event) => {
-        const trigger = event.target.closest(".js-play-video");
-        if (trigger) {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-        }
-      }, true);
-      new MutationObserver(updateHubCards).observe(videoGrid, { childList: true, subtree: true });
-      fetch("/api/episodes")
-        .then((response) => {
-          if (!response.ok) throw new Error(`Episode request failed with status ${response.status}.`);
-          return response.json();
-        })
-        .then((data) => {
-          const episodes = Array.isArray(data) ? data : data.episodes || [];
-          episodes.forEach((episode) => {
-            const id = episode.id || episode._id;
-            if (id != null) episodesById.set(String(id), episode);
+          const response = await fetch("/api/inquiries", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
           });
-          episodesLoaded = true;
-          updateHubCards();
-        })
-        .catch((error) => {
-          console.error("Could not load Video Hub links.", error);
-          episodesLoaded = true;
-          updateHubCards();
-        });
-    })();
-  </script>
-  <script>
-    (() => {
-        const tiles = [
-          ["Politics", "/images/inv-politics.jpg", "Politics and public leadership"],
-          ["Economy & Enterprise", "/images/inv-economy.jpg", "Economy and enterprise"],
-          ["Elections", "/images/inv-elections.jpg", "Elections and voting"],
-          ["Oil & Gas", "/images/inv-oilgas.jpg", "Oil and gas industry"],
-          ["Civil Unrest", "/images/inv-unrest.jpg", "Civil unrest and public demonstrations"],
-          ["Education & Health", "/images/inv-education.jpg", "Education and healthcare"]
-        ];
-        const grid = document.getElementById("investigation-grid");
-        grid.replaceChildren();
-        tiles.forEach(([label, src, alt]) => {
-          const tile = document.createElement("div");
-          tile.className = "investigation-tile";
-          const image = document.createElement("img");
-          image.src = src;
-          image.alt = alt;
-          image.loading = "lazy";
-          const text = document.createElement("span");
-          text.textContent = label;
-          tile.append(image, text);
-          grid.append(tile);
-        });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(result.error || "Your inquiry could not be sent. Please try again.");
+          inquiryForm.reset();
+          feedback.textContent = "Thank you. Your inquiry has been received and we'll be in touch shortly.";
+          feedback.classList.add("success");
+        } catch (error) {
+          feedback.textContent = error.message || "Your inquiry could not be sent. Please try again.";
+          feedback.classList.add("error");
+        } finally {
+          submitButton.disabled = false;
+          submitButton.innerHTML = 'Send Inquiry <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+        }
+      });
     })();
   </script>
 </body>

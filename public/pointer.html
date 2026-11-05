@@ -1,33 +1,28 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
+  <script>
+    try {
+      document.documentElement.dataset.theme = localStorage.getItem("pointer-theme") === "dark" ? "dark" : "light";
+    } catch (error) {
+      document.documentElement.dataset.theme = "light";
+    }
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b0e13">
-  <meta name="description" content="The Pointer: independent investigative news, politics, and lifestyle from Nigeria.">
-  <title>The Pointer | Independent Perspective. Global Reach.</title>
+  <meta name="description" content="The Pointer | A Delbuster Resource Limited Media Production">
+  <meta property="og:title" content="The Pointer | A Delbuster Resource Limited Media Production">
+  <meta property="og:description" content="Independent investigative journalism and incisive commentary from The Pointer, a Delbuster Resource Limited media production.">
+  <meta name="twitter:title" content="The Pointer | A Delbuster Resource Limited Media Production">
+  <meta name="twitter:description" content="Independent investigative journalism and incisive commentary from The Pointer, a Delbuster Resource Limited media production.">
+  <title>The Pointer | A Delbuster Resource Limited Media Production</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
-      color-scheme: dark;
-      --page: #0b0e13;
-      --panel: #111827;
-      --panel-raised: #151d2b;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --subtle: #718198;
-      --accent: #dc1b3f;
-      --accent-hover: #f02a4f;
-      --border: rgba(148, 163, 184, .14);
-      --input: #fff;
-      --input-text: #111827;
-      --shadow: rgba(0, 0, 0, .35);
-    }
-
-    :root[data-theme="light"] {
       color-scheme: light;
       --bg: #EAF0F7;
       --card: #FFFFFF;
@@ -46,6 +41,26 @@
       --input-text: #111827;
       --shadow: rgba(15, 23, 42, .15);
     }
+
+    :root[data-theme="dark"] {
+      color-scheme: dark;
+      --page: #0b0e13;
+      --panel: #111827;
+      --panel-raised: #151d2b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --subtle: #718198;
+      --accent: #dc1b3f;
+      --accent-hover: #f02a4f;
+      --border: rgba(148, 163, 184, .14);
+      --input: #fff;
+      --input-text: #111827;
+      --shadow: rgba(0, 0, 0, .35);
+    }
+
+    .theme-icon { display: none; }
+    :root[data-theme="light"] .theme-icon-light,
+    :root[data-theme="dark"] .theme-icon-dark { display: block; }
 
     :root[data-theme="light"] .newsletter,
     :root[data-theme="light"] footer {
@@ -203,6 +218,7 @@
       position: relative; height: 220px; background-color: #0F172A;
       background-position: center; background-size: cover;
     }
+    .hub-thumbnail-link { position: absolute; z-index: 0; inset: 0; display: block; }
     .hub-thumb .thumb-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .hub-thumb::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 65%, rgba(3, 7, 14, .2)); pointer-events: none; }
     .hub-play {
@@ -223,8 +239,9 @@
       min-height: clamp(188px, 15.3vw, 220px); position: relative; display: flex; align-items: flex-end; overflow: hidden;
       border-radius: 24px; padding: 18px; background-color: #0F172A; background-size: cover; background-position: center;
     }
-    .investigation-tile::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(5, 9, 14, .03) 24%, rgba(5, 9, 14, .86) 100%); }
-    .investigation-tile span { position: relative; z-index: 1; color: #FFFFFF; font-size: 19px; font-weight: 800; letter-spacing: -.01em; }
+    .investigation-tile::before { content: ""; position: absolute; z-index: 1; inset: 0; background: linear-gradient(180deg, rgba(5, 9, 14, .03) 24%, rgba(5, 9, 14, .86) 100%); }
+    .investigation-tile img { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+    .investigation-tile span { position: relative; z-index: 2; color: #FFFFFF; font-size: 19px; font-weight: 800; letter-spacing: -.01em; }
     .more-label { margin: 18px 0 0; color: var(--muted); font-size: 11px; font-weight: 700; }
 
     .corporate-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 30px; align-items: center; margin-top: 25px; }
@@ -403,9 +420,10 @@
             <span id="location-text">Lagos, NG</span>
           </span>
         </div>
-        <div class="production"><span class="status-dot" aria-hidden="true"></span><span>A Delbuster Global Media Production</span></div>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light mode" title="Toggle theme">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.7" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <a class="production" href="/"><span class="status-dot" aria-hidden="true"></span><span>A Delbuster Resource Limited Media Production</span></a>
+        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark mode" title="Toggle theme">
+          <svg class="theme-icon theme-icon-light" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.2 15.4A8.5 8.5 0 0 1 8.6 3.8 8.5 8.5 0 1 0 20.2 15.4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <svg class="theme-icon theme-icon-dark" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.7" stroke="currentColor" stroke-width="1.5"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
       </div>
     </div>
@@ -427,7 +445,7 @@
         <div class="nav-links">
           <a class="nav-link active" href="#top">Home</a>
           <a class="nav-link" href="#watch-full-episodes">Watch Full Episodes</a>
-          <a class="nav-link" href="#corporate-overview">About Delbuster</a>
+          <a class="nav-link" href="#corporate-overview">About Delbuster Resource Limited</a>
         </div>
         <a class="header-cta" href="https://youtube.com/@thepointer" target="_blank" rel="noopener">
           <span class="nav-dot" aria-hidden="true" style="width:6px;height:6px;background:#fff"></span>
@@ -512,14 +530,15 @@
     <section class="section site-container" id="corporate-overview" aria-labelledby="corporate-heading">
       <div class="section-rule">
         <p class="section-label">CORPORATE OVERVIEW</p>
-        <h2 class="section-heading" id="corporate-heading">Delbuster Enterprise: Driving Value Across Sectors</h2>
+        <h2 class="section-heading" id="corporate-heading">Delbuster Resource Limited: Driving Value Across Sectors</h2>
         <div class="corporate-grid">
           <div class="corporate-copy">
-            <p>Delbuster Enterprise is a diversified, multi-sector conglomerate built on the principles of strategic opportunity, operational resilience, and long-term economic value creation. Headquartered in Nigeria, our portfolio spans high-impact industries designed to foster sustainable growth, facilitate cross-border trade, and build enduring enterprise value across emerging markets.</p>
-            <p>The Pointer serves as the flagship media asset of Delbuster Enterprise. As an independent, investigative media powerhouse, The Pointer is dedicated to delivering uncompromising journalism, evidence-based reporting, and sharp, unfiltered commentary on the critical political, economic, and social forces shaping Nigeria and the global landscape.</p>
-            <p>By bridging commercial excellence with public-interest journalism, Delbuster Enterprise continues to pioneer solutions, empower decision-makers, and elevate accountability across every market we touch.</p>
+            <p>Delbuster Resource Limited is a dynamic enterprise built to respond to a world of possibilities. From consultancy and media to merchandise and international trade, we bring clarity, care and commitment to every engagement.</p>
+            <p>The Pointer is the media arm of Delbuster Resource Limited: an independent, investigative platform dedicated to evidence-based reporting and sharp, unfiltered commentary on the political, economic and social forces shaping Nigeria and the world.</p>
+            <p>Our business is diverse. Our commitment to doing it right is constant.</p>
+            <a class="pill" href="/">Visit Delbuster Resource Limited <span aria-hidden="true">→</span></a>
           </div>
-          <div class="corporate-image" role="img" aria-label="Corporate meeting at Delbuster Global headquarters"></div>
+          <div class="corporate-image" role="img" aria-label="Corporate meeting at Delbuster Resource Limited"></div>
         </div>
       </div>
     </section>
@@ -527,14 +546,15 @@
     <section class="section site-container" id="get-in-touch" aria-labelledby="contact-heading">
       <div class="section-rule">
         <p class="section-label">WORK WITH US / REACH OUT</p>
-        <h2 class="section-heading" id="contact-heading">Get in Touch with Delbuster Enterprise</h2>
+        <h2 class="section-heading" id="contact-heading">Get in Touch with Delbuster Resource Limited</h2>
         <p class="section-subtitle contact-intro">Have a question, a story to share, or an opportunity to explore? Get in touch with our team.</p>
         <div class="contact-grid">
           <article class="contact-card">
             <h3>Let's connect</h3>
-            <p class="contact-item"><strong>Email</strong><a href="mailto:delbusterglobal@gmail.com">delbusterglobal@gmail.com</a></p>
-            <p class="contact-item"><strong>Office</strong>No. 2 cross river street, Gariki, Abuja</p>
-            <a class="pill" href="https://wa.me/2340000000000" target="_blank" rel="noopener">Chat with us on WhatsApp <span aria-hidden="true">↗</span></a>
+            <p class="contact-item"><strong>Email</strong><a data-company-email href="mailto:delbusterglobal@gmail.com">delbusterglobal@gmail.com</a></p>
+            <p class="contact-item"><strong>Office</strong>2 Cross River Street, Gariki, Abuja</p>
+            <p class="contact-item" id="company-phone-row" hidden><strong>Phone</strong><a data-company-phone-link href=""></a></p>
+            <a class="pill" id="company-whatsapp" href="" target="_blank" rel="noopener" hidden>Chat with us on WhatsApp <span aria-hidden="true">↗</span></a>
           </article>
           <article class="contact-card">
             <h3>Send us a message</h3>
@@ -592,9 +612,9 @@
   <footer>
     <div class="site-container footer-grid">
       <div class="footer-brand">
-        <div class="footer-brand-title">Delbuster Global</div>
-        <p>Connecting people, ideas and opportunity. The Pointer is the flagship news and media brand of Delbuster.</p>
-        <strong>ONE GROUP. A WORLD OF POSSIBILITY.</strong>
+        <div class="footer-brand-title">Delbuster Resource Limited</div>
+        <p>Connecting people, ideas and opportunity. The Pointer is the media arm of Delbuster Resource Limited.</p>
+        <strong>ONE COMPANY. MANY POSSIBILITIES.</strong>
       </div>
       <div class="footer-column">
         <h3>THE POINTER</h3>
@@ -604,11 +624,11 @@
         <a href="#get-in-touch">Contact the newsroom</a>
       </div>
       <div class="footer-column">
-        <h3>THE DELBUSTER GROUP</h3>
-        <a href="#corporate-overview">News &amp; Media</a>
-        <span class="soon-link">Trade &amp; Commerce <span class="coming-soon">COMING SOON</span></span>
-        <span class="soon-link">Logistics &amp; Distribution <span class="coming-soon">COMING SOON</span></span>
-        <span class="soon-link">Enterprise Services <span class="coming-soon">COMING SOON</span></span>
+        <h3>DELBUSTER RESOURCE LIMITED</h3>
+        <a href="/">Home</a>
+        <a href="/#services">Our services</a>
+        <a href="/#about">About</a>
+        <a href="/#contact">Contact</a>
       </div>
       <div class="footer-column">
         <h3>FOLLOW THE POINTER</h3>
@@ -617,7 +637,7 @@
         <a href="https://facebook.com" target="_blank" rel="noopener">Facebook ↗</a>
       </div>
     </div>
-    <div class="site-container copyright">© 2026 Delbuster. The Pointer. All rights reserved.</div>
+    <div class="site-container copyright">© 2026 Delbuster Resource Limited. The Pointer. All rights reserved.</div>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -652,5 +672,138 @@
 
   <script src="/js/media.js"></script>
   <script src="/js/site.js"></script>
+  <script>
+    (() => {
+      const videoGrid = document.getElementById("video-grid");
+      const episodesById = new Map();
+      let episodesLoaded = false;
+
+      function createExternalLink(className, url, label, content) {
+        const link = document.createElement("a");
+        link.className = className.replace(/\bjs-play-video\b/g, "").trim();
+        link.setAttribute("href", url);
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        if (label) link.setAttribute("aria-label", label);
+        while (content.firstChild) link.append(content.firstChild);
+        return link;
+      }
+
+      function validVideoUrl(value) {
+        if (typeof value !== "string" || !value) return false;
+        try {
+          const protocol = new URL(value).protocol;
+          return protocol === "http:" || protocol === "https:";
+        } catch {
+          return false;
+        }
+      }
+
+      function updateHubCards() {
+        if (!episodesLoaded) return;
+        videoGrid.querySelectorAll(".hub-card").forEach((card) => {
+          if (card.dataset.externalLinksReady === "true") return;
+          const playButton = card.querySelector(".hub-play");
+          const watchButton = card.querySelector(".hub-card-bottom .js-play-video");
+          if (!playButton || !watchButton) return;
+
+          const episodeId = playButton.dataset.episodeId || watchButton.dataset.episodeId;
+          const episode = episodesById.get(String(episodeId));
+          const videoUrl = episode && episode.videoUrl;
+          card.dataset.externalLinksReady = "true";
+
+          if (!validVideoUrl(videoUrl)) {
+            [playButton, watchButton].forEach((button) => {
+              button.disabled = true;
+              button.classList.remove("js-play-video");
+            });
+            watchButton.textContent = "Link unavailable";
+            return;
+          }
+
+          const thumbnail = card.querySelector(".hub-thumb");
+          const image = thumbnail.querySelector(".thumb-image");
+          const thumbnailLink = document.createElement("a");
+          thumbnailLink.className = "hub-thumbnail-link";
+          thumbnailLink.setAttribute("href", videoUrl);
+          thumbnailLink.target = "_blank";
+          thumbnailLink.rel = "noopener noreferrer";
+          if (image) {
+            thumbnail.insertBefore(thumbnailLink, image);
+            thumbnailLink.append(image);
+          } else {
+            thumbnail.append(thumbnailLink);
+          }
+
+          playButton.replaceWith(createExternalLink(
+            playButton.className,
+            videoUrl,
+            playButton.getAttribute("aria-label"),
+            playButton
+          ));
+          watchButton.replaceWith(createExternalLink(
+            watchButton.className,
+            videoUrl,
+            "",
+            watchButton
+          ));
+        });
+      }
+
+      videoGrid.addEventListener("click", (event) => {
+        const trigger = event.target.closest(".js-play-video");
+        if (trigger) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+        }
+      }, true);
+      new MutationObserver(updateHubCards).observe(videoGrid, { childList: true, subtree: true });
+      fetch("/api/episodes")
+        .then((response) => {
+          if (!response.ok) throw new Error(`Episode request failed with status ${response.status}.`);
+          return response.json();
+        })
+        .then((data) => {
+          const episodes = Array.isArray(data) ? data : data.episodes || [];
+          episodes.forEach((episode) => {
+            const id = episode.id || episode._id;
+            if (id != null) episodesById.set(String(id), episode);
+          });
+          episodesLoaded = true;
+          updateHubCards();
+        })
+        .catch((error) => {
+          console.error("Could not load Video Hub links.", error);
+          episodesLoaded = true;
+          updateHubCards();
+        });
+    })();
+  </script>
+  <script>
+    (() => {
+        const tiles = [
+          ["Politics", "/images/inv-politics.jpg", "Politics and public leadership"],
+          ["Economy & Enterprise", "/images/inv-economy.jpg", "Economy and enterprise"],
+          ["Elections", "/images/inv-elections.jpg", "Elections and voting"],
+          ["Oil & Gas", "/images/inv-oilgas.jpg", "Oil and gas industry"],
+          ["Civil Unrest", "/images/inv-unrest.jpg", "Civil unrest and public demonstrations"],
+          ["Education & Health", "/images/inv-education.jpg", "Education and healthcare"]
+        ];
+        const grid = document.getElementById("investigation-grid");
+        grid.replaceChildren();
+        tiles.forEach(([label, src, alt]) => {
+          const tile = document.createElement("div");
+          tile.className = "investigation-tile";
+          const image = document.createElement("img");
+          image.src = src;
+          image.alt = alt;
+          image.loading = "lazy";
+          const text = document.createElement("span");
+          text.textContent = label;
+          tile.append(image, text);
+          grid.append(tile);
+        });
+    })();
+  </script>
 </body>
 </html>

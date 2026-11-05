@@ -397,11 +397,17 @@
   });
 
   function updateSocialLinks(settings) {
+    const companyEmail = typeof settings.companyEmail === "string" && settings.companyEmail.trim()
+      ? settings.companyEmail.trim() : "delbusterglobal@gmail.com";
+    document.querySelectorAll("[data-company-email]").forEach((anchor) => {
+      anchor.textContent = companyEmail;
+      anchor.href = `mailto:${companyEmail}`;
+    });
+
     const mappings = [
       ["youtubeUrl", ["https://youtube.com/@thepointer"]],
       ["instagramUrl", ["https://www.instagram.com/reel/DeHTJZEgYVi/?utm_source=ig_web_copy_link&rpxt=NTc4MTIwNjQ2YQ=="]],
-      ["facebookUrl", ["https://facebook.com"]],
-      ["whatsappUrl", ["https://wa.me/2340000000000"]]
+      ["facebookUrl", ["https://facebook.com"]]
     ];
     for (const [field, defaults] of mappings) {
       const url = settings[field];
@@ -409,6 +415,25 @@
       document.querySelectorAll("a[href]").forEach((anchor) => {
         if (defaults.includes(anchor.href)) anchor.href = url;
       });
+    }
+
+    const companyPhone = typeof settings.companyPhone === "string" ? settings.companyPhone.trim() : "";
+    const phoneDigits = companyPhone.replace(/\D/g, "");
+    const phoneRow = document.getElementById("company-phone-row");
+    const phoneLink = document.querySelector("[data-company-phone-link]");
+    if (phoneRow && phoneLink && phoneDigits) {
+      phoneLink.textContent = companyPhone;
+      phoneLink.href = `tel:${phoneDigits}`;
+      phoneRow.hidden = false;
+    }
+
+    const whatsapp = typeof settings.whatsappUrl === "string" ? settings.whatsappUrl.trim() : "";
+    const whatsappDigits = whatsapp.replace(/\D/g, "");
+    const whatsappHref = /^https?:\/\//i.test(whatsapp) ? whatsapp : whatsappDigits ? `https://wa.me/${whatsappDigits}` : "";
+    const whatsappButton = document.getElementById("company-whatsapp");
+    if (whatsappButton && whatsappHref) {
+      whatsappButton.href = whatsappHref;
+      whatsappButton.hidden = false;
     }
   }
 
@@ -431,7 +456,6 @@
       featuredCta.removeAttribute("data-episode-id");
       featuredCard.style.backgroundImage = "";
       videoGrid.replaceChildren(createText("p", "empty-episodes", `Could not load episodes: ${error.message}`));
-      return;
     }
 
     try {

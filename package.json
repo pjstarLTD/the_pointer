@@ -2,7 +2,7 @@
   "name": "the-pointer",
   "version": "1.0.0",
   "private": true,
-  "description": "The Pointer public site and administration API",
+  "description": "Delbuster Resource Limited company website, The Pointer media hub and administration API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

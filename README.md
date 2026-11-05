@@ -1,6 +1,6 @@
-# The Pointer
+# Delbuster Resource Limited
 
-The public website and editorial dashboard are served from one Node.js/Express app and use MongoDB Atlas for content storage.
+The Delbuster Resource Limited company homepage, The Pointer media hub and editorial dashboard are served from one Node.js/Express app and use MongoDB Atlas for content storage.
 
 ## Setup
 
@@ -21,7 +21,7 @@ The public website and editorial dashboard are served from one Node.js/Express a
    npm start
    ```
 
-7. Open `http://localhost:3000` for the public website or `http://localhost:3000/admin.html` for the dashboard. Sign in with `ADMIN_EMAIL` and `ADMIN_PASSWORD` from `.env`.
+7. Open `http://localhost:3000` for the company homepage, `http://localhost:3000/pointer` for The Pointer, or `http://localhost:3000/admin` for the dashboard. Sign in with `ADMIN_EMAIL` and `ADMIN_PASSWORD` from `.env`.
 
 The server seeds the required categories, sample episodes, and default settings when their collections are empty. Put any supplied local image assets in `public/images/`. Thumbnail image uploads use an unsigned Cloudinary preset configured under **Settings**; without it, paste a thumbnail URL.
 
@@ -38,6 +38,6 @@ The server seeds the required categories, sample episodes, and default settings 
 
 ## API
 
-Public endpoints are `GET /api/episodes`, `GET /api/categories`, `GET /api/settings`, `POST /api/contact`, and `POST /api/newsletter`. Admin endpoints under `/api/admin` require a JWT returned by `POST /api/auth/login` and include episode, category, settings, message, and subscriber management.
+Public endpoints are `GET /api/episodes`, `GET /api/categories`, `GET /api/settings`, `POST /api/contact`, `POST /api/inquiries`, and `POST /api/newsletter`. Admin endpoints under `/api/admin` require a JWT returned by `POST /api/auth/login` and include episode, category, settings, message, inquiry, and subscriber management.
 
 The API validates all submitted video URLs as HTTP(S) links. Pasted iframe markup is accepted only after extracting and validating its HTTP(S) `src`. The shared browser helper is `public/js/media.js`.

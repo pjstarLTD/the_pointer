@@ -17,6 +17,14 @@ const newsletterLimiter = rateLimit({
   message: { error: "Too many submissions. Please try again later." }
 });
 
+const inquiryLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 5,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: { error: "Too many submissions. Please try again later." }
+});
+
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 10,
@@ -25,4 +33,4 @@ const loginLimiter = rateLimit({
   message: { error: "Too many login attempts. Please try again later." }
 });
 
-module.exports = { contactLimiter, newsletterLimiter, loginLimiter };
+module.exports = { contactLimiter, newsletterLimiter, inquiryLimiter, loginLimiter };
