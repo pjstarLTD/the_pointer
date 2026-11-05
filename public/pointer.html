@@ -116,6 +116,7 @@
     .utility-left, .production, .location { display: flex; align-items: center; }
     .utility-left { gap: 16px; white-space: nowrap; }
     .location { gap: 9px; }
+    .location[hidden], .utility-divider[hidden] { display: none !important; }
     .utility-date { text-transform: uppercase; }
     .utility-divider { height: 14px; border-left: 1px solid var(--border); }
     .production { justify-content: center; gap: 11px; color: var(--text); font-weight: 700; }
@@ -414,10 +415,10 @@
       <div class="site-container utility-inner">
         <div class="utility-left">
           <span class="utility-date" id="current-date">FRIDAY, 23 OCTOBER 2026</span>
-          <span class="utility-divider" aria-hidden="true"></span>
-          <span class="location">
+          <span class="utility-divider" id="location-divider" aria-hidden="true" hidden></span>
+          <span class="location" hidden>
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v2m0 14v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M3 12h2m14 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-            <span id="location-text">Lagos, NG</span>
+            <span id="location-text"></span>
           </span>
         </div>
         <a class="production" href="/"><span class="status-dot" aria-hidden="true"></span><span>A Delbuster Resource Limited Media Production</span></a>
@@ -672,6 +673,28 @@
 
   <script src="/js/media.js"></script>
   <script src="/js/site.js"></script>
+  <script>
+    (async () => {
+      const locationItem = document.querySelector(".location");
+      const locationDivider = document.getElementById("location-divider");
+      const locationText = document.getElementById("location-text");
+      try {
+        const response = await fetch("/api/location", { cache: "no-store" });
+        if (!response.ok) throw new Error(`Location request failed (${response.status}).`);
+        const location = await response.json();
+        const state = typeof location?.state === "string" ? location.state.trim() : "";
+        const countryCode = typeof location?.countryCode === "string" ? location.countryCode.trim() : "";
+        const countryName = typeof location?.countryName === "string" ? location.countryName.trim() : "";
+        const displayLocation = state && countryCode ? `${state}, ${countryCode}` : countryName;
+        if (!displayLocation) return;
+        locationText.textContent = displayLocation;
+        locationItem.hidden = false;
+        locationDivider.hidden = false;
+      } catch {
+        console.warn("Could not load visitor location.");
+      }
+    })();
+  </script>
   <script>
     (() => {
       const videoGrid = document.getElementById("video-grid");

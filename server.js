@@ -21,6 +21,15 @@ app.locals.MAX_EPISODES = MAX_EPISODES;
 const categoriesToSeed = [
   "Politics", "Economy", "Elections", "Oil & Gas", "Civil Unrest", "Education & Health", "Business"
 ];
+const nigeriaStates = {
+  AB: "Abia", AD: "Adamawa", AK: "Akwa Ibom", AN: "Anambra", BA: "Bauchi", BY: "Bayelsa",
+  BE: "Benue", BO: "Borno", CR: "Cross River", DE: "Delta", EB: "Ebonyi", ED: "Edo",
+  EK: "Ekiti", EN: "Enugu", FC: "FCT Abuja", GO: "Gombe", IM: "Imo", JI: "Jigawa",
+  KD: "Kaduna", KN: "Kano", KT: "Katsina", KE: "Kebbi", KO: "Kogi", KW: "Kwara",
+  LA: "Lagos", NA: "Nasarawa", NI: "Niger", OG: "Ogun", ON: "Ondo", OS: "Osun",
+  OY: "Oyo", PL: "Plateau", RI: "Rivers", SO: "Sokoto", TA: "Taraba", YO: "Yobe",
+  ZA: "Zamfara"
+};
 let initializationPromise;
 
 app.disable("x-powered-by");
@@ -33,7 +42,7 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
       imgSrc: ["'self'", "https:", "data:", "blob:", "https://res.cloudinary.com", "https://img.youtube.com"],
       mediaSrc: ["'self'", "https:", "blob:"],
-      connectSrc: ["'self'", "https://ipapi.co", "https://api.cloudinary.com", "https://vimeo.com", "https://player.vimeo.com"],
+      connectSrc: ["'self'", "https://api.cloudinary.com", "https://vimeo.com", "https://player.vimeo.com"],
       frameSrc: ["'self'", "https:", "https://www.youtube.com"],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
@@ -68,6 +77,26 @@ app.use(cors({
 app.use(express.json({ limit: "50kb" }));
 app.use(express.urlencoded({ extended: false, limit: "50kb" }));
 
+app.get("/api/location", (req, res) => {
+  res.set("Cache-Control", "no-store");
+
+  const countryCode = (req.get("x-vercel-ip-country") || "").trim().toUpperCase();
+  const regionCode = (req.get("x-vercel-ip-country-region") || "").trim().toUpperCase();
+  let city = "";
+  try {
+    city = decodeURIComponent(req.get("x-vercel-ip-city") || "").trim();
+  } catch {
+    city = "";
+  }
+
+  let state = countryCode === "NG" ? nigeriaStates[regionCode] || "" : "";
+  if (countryCode !== "NG" && !state) state = city;
+  const countryName = countryCode
+    ? new Intl.DisplayNames(["en"], { type: "region" }).of(countryCode) || ""
+    : "";
+
+  return res.json({ state, countryCode, countryName });
+});
 app.use("/api", publicRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);

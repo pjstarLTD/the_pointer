@@ -193,7 +193,7 @@
     }
     @media(max-width:480px){
       .wrap{width:calc(100% - 32px)}
-      .utility-left .location-item{display:none}.utility-right{gap:10px}
+      .utility-right{gap:10px}
       .utility-item a{font-size:8px}.utility-date{font-size:8px}
       .brand-name{font-size:15px}.brand-sub{font-size:7px}.company-brand{gap:10px}
       .hero-main{padding-top:47px}.hero h1{font-size:39px}
@@ -221,7 +221,7 @@
     <div class="wrap utility-inner">
       <div class="utility-group">
         <span class="utility-item utility-date"><span class="blue-dot" aria-hidden="true"></span><span id="today-date"></span></span>
-        <span class="utility-item location-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span id="location-text">Lagos, NG</span></span>
+        <span class="utility-item location-item" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg><span id="location-text"></span></span>
       </div>
       <div class="utility-right">
         <span class="utility-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><a data-company-email href="mailto:delbusterglobal@gmail.com">delbusterglobal@gmail.com</a></span>
@@ -424,12 +424,24 @@
         weekday: "long", day: "2-digit", month: "long", year: "numeric"
       }).format(new Date()).toUpperCase();
 
-      fetch("https://ipapi.co/json/").then((response) => {
-        if (!response.ok) throw new Error(`Location lookup failed (${response.status}).`);
-        return response.json();
-      }).then((location) => {
-        if (location.city && location.country_code) document.getElementById("location-text").textContent = `${location.city}, ${location.country_code}`;
-      }).catch((error) => console.warn("Using the default location because location lookup failed.", error));
+      (async () => {
+        const locationItem = document.querySelector(".location-item");
+        const locationText = document.getElementById("location-text");
+        try {
+          const response = await fetch("/api/location", { cache: "no-store" });
+          if (!response.ok) throw new Error(`Location request failed (${response.status}).`);
+          const location = await response.json();
+          const state = typeof location?.state === "string" ? location.state.trim() : "";
+          const countryCode = typeof location?.countryCode === "string" ? location.countryCode.trim() : "";
+          const countryName = typeof location?.countryName === "string" ? location.countryName.trim() : "";
+          const displayLocation = state && countryCode ? `${state}, ${countryCode}` : countryName;
+          if (!displayLocation) return;
+          locationText.textContent = displayLocation;
+          locationItem.hidden = false;
+        } catch {
+          console.warn("Could not load visitor location.");
+        }
+      })();
 
       fetch("/api/settings").then((response) => {
         if (!response.ok) throw new Error(`Settings request failed (${response.status}).`);
